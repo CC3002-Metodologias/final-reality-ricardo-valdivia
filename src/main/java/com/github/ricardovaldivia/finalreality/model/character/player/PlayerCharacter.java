@@ -4,6 +4,8 @@ import com.github.ricardovaldivia.finalreality.model.character.AbstractCharacter
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.github.ricardovaldivia.finalreality.model.weapon.Weapon;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +28,8 @@ public class PlayerCharacter extends AbstractCharacter {
    * @param characterClass
    *     the class of this character
    */
+  private Weapon equippedWeapon = null;
+
   public PlayerCharacter(@NotNull String name,
       @NotNull BlockingQueue<ICharacter> turnsQueue,
       final CharacterClass characterClass) {
@@ -69,4 +73,11 @@ public class PlayerCharacter extends AbstractCharacter {
   public CharacterClass getCharacterClass() {
     return characterClass;
   }
+
+  @Override
+  public void waitTurn() {
+    scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
+      scheduledExecutor
+              .schedule(this::addToQueue, equippedWeapon.getWeight() / 10, TimeUnit.SECONDS);
+    }
 }

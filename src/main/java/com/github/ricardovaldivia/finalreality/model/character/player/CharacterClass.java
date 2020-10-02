@@ -7,5 +7,5 @@ package com.github.ricardovaldivia.finalreality.model.character.player;
  * @author <Your name>
  */
 public enum CharacterClass {
-  KNIGHT, ENGINEER, THIEF, BLACK_MAGE, WHITE_MAGE, ENEMY
+  KNIGHT, ENGINEER, THIEF,BLACK_MAGE, WHITE_MAGE,ENEMY
 }
