@@ -4,6 +4,8 @@ import com.github.ricardovaldivia.finalreality.model.character.AbstractCharacter
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
+
+import com.github.ricardovaldivia.finalreality.model.weapon.Weapon;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -46,5 +48,25 @@ public class PlayerCharacter extends AbstractCharacter {
     final PlayerCharacter that = (PlayerCharacter) o;
     return getCharacterClass() == that.getCharacterClass()
         && getName().equals(that.getName());
+  }
+
+  @Override
+  public String getName() {
+    return name;
+  }
+
+  @Override
+  public void equip(Weapon weapon) {
+      this.equippedWeapon = weapon;
+  }
+
+  @Override
+  public Weapon getEquippedWeapon() {
+    return equippedWeapon;
+  }
+
+  @Override
+  public CharacterClass getCharacterClass() {
+    return characterClass;
   }
 }
