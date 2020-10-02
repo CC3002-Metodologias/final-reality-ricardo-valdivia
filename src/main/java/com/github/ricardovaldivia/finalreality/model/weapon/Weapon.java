@@ -1,4 +1,4 @@
-package com.github.cc3002.finalreality.model.weapon;
+package com.github.ricardovaldivia.finalreality.model.weapon;
 
 import java.util.Objects;
 
@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Weapon {
 
   private final String name;
-  private final int damage;
+  private final int phisicalDamage;
   private final int weight;
   private final WeaponType type;
 
@@ -23,7 +23,7 @@ public class Weapon {
   public Weapon(final String name, final int damage, final int weight,
       final WeaponType type) {
     this.name = name;
-    this.damage = damage;
+    this.phisicalDamage = damage;
     this.weight = weight;
     this.type = type;
   }
@@ -32,8 +32,8 @@ public class Weapon {
     return name;
   }
 
-  private int getDamage() {
-    return damage;
+  private int getPhisicalDamage() {
+    return phisicalDamage;
   }
 
   public int getWeight() {
@@ -53,7 +53,7 @@ public class Weapon {
       return false;
     }
     final Weapon weapon = (Weapon) o;
-    return getDamage() == weapon.getDamage() &&
+    return getPhisicalDamage() == weapon.getPhisicalDamage() &&
         getWeight() == weapon.getWeight() &&
         getName().equals(weapon.getName()) &&
         getType() == weapon.getType();
@@ -61,6 +61,6 @@ public class Weapon {
 
   @Override
   public int hashCode() {
-    return Objects.hash(getName(), getDamage(), getWeight(), getType());
+    return Objects.hash(getName(), getPhisicalDamage(), getWeight(), getType());
   }
 }

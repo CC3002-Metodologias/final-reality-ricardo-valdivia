@@ -1,11 +1,11 @@
-package com.github.cc3002.finalreality.model.character;
+package com.github.ricardovaldivia.finalreality.model.character;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
+import com.github.ricardovaldivia.finalreality.model.character.player.CharacterClass;
+import com.github.ricardovaldivia.finalreality.model.character.player.PlayerCharacter;
 import java.util.EnumMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,8 +1,8 @@
-package com.github.cc3002.finalreality.model.character;
+package com.github.ricardovaldivia.finalreality.model.character;
 
-import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
-import com.github.cc3002.finalreality.model.weapon.Weapon;
+import com.github.ricardovaldivia.finalreality.model.character.player.CharacterClass;
+import com.github.ricardovaldivia.finalreality.model.character.player.PlayerCharacter;
+import com.github.ricardovaldivia.finalreality.model.weapon.Weapon;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -51,25 +51,4 @@ public abstract class AbstractCharacter implements ICharacter {
     scheduledExecutor.shutdown();
   }
 
-  @Override
-  public String getName() {
-    return name;
-  }
-
-  @Override
-  public void equip(Weapon weapon) {
-    if (this instanceof PlayerCharacter) {
-      this.equippedWeapon = weapon;
-    }
-  }
-
-  @Override
-  public Weapon getEquippedWeapon() {
-    return equippedWeapon;
-  }
-
-  @Override
-  public CharacterClass getCharacterClass() {
-    return characterClass;
-  }
 }
