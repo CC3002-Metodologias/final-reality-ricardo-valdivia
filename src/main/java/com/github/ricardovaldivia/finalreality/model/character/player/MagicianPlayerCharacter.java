@@ -20,7 +20,7 @@ public class MagicianPlayerCharacter extends PlayerCharacter{
      */
     private final int mana;
 
-    public MagicianPlayerCharacter (@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue, CharacterClass characterClass,final int manaCharacter) {
+    public MagicianPlayerCharacter (@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue, CharacterClass characterClass, final int manaCharacter) {
         super(name, turnsQueue, characterClass);
         mana = manaCharacter;
     }
