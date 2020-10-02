@@ -1,8 +1,8 @@
-package com.github.cc3002.finalreality.model.character;
+package com.github.ricardovaldivia.finalreality.model.character;
 
-import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
-import com.github.cc3002.finalreality.model.weapon.Weapon;
+import com.github.ricardovaldivia.finalreality.model.character.player.CharacterClass;
+import com.github.ricardovaldivia.finalreality.model.character.player.PlayerCharacter;
+import com.github.ricardovaldivia.finalreality.model.weapon.Weapon;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
