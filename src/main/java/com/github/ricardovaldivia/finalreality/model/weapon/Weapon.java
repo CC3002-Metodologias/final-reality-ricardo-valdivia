@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Weapon {
 
   private final String name;
-  private final int phisicalDamage;
+  private final int physicalDamage;
   private final int weight;
   private final WeaponType type;
 
@@ -23,24 +23,24 @@ public class Weapon {
   public Weapon(final String name, final int damage, final int weight,
       final WeaponType type) {
     this.name = name;
-    this.phisicalDamage = damage;
+    this.physicalDamage = damage;
     this.weight = weight;
     this.type = type;
   }
 
-  private String getName() {
+  public String getName() {
     return name;
   }
 
-  private int getPhisicalDamage() {
-    return phisicalDamage;
+  public int getPhysicalDamage() {
+    return physicalDamage;
   }
 
   public int getWeight() {
     return weight;
   }
 
-  private WeaponType getType() {
+  public WeaponType getType() {
     return type;
   }
 
@@ -53,7 +53,7 @@ public class Weapon {
       return false;
     }
     final Weapon weapon = (Weapon) o;
-    return getPhisicalDamage() == weapon.getPhisicalDamage() &&
+    return getPhysicalDamage() == weapon.getPhysicalDamage() &&
         getWeight() == weapon.getWeight() &&
         getName().equals(weapon.getName()) &&
         getType() == weapon.getType();
@@ -61,6 +61,6 @@ public class Weapon {
 
   @Override
   public int hashCode() {
-    return Objects.hash(getName(), getPhisicalDamage(), getWeight(), getType());
+    return Objects.hash(getName(), getPhysicalDamage(), getWeight(), getType());
   }
 }

@@ -54,22 +54,15 @@ public class PlayerCharacter extends AbstractCharacter {
         && getName().equals(that.getName());
   }
 
-  @Override
-  public String getName() {
-    return name;
-  }
-
-  @Override
   public void equip(Weapon weapon) {
       this.equippedWeapon = weapon;
   }
 
-  @Override
   public Weapon getEquippedWeapon() {
     return equippedWeapon;
   }
 
-  @Override
+
   public CharacterClass getCharacterClass() {
     return characterClass;
   }

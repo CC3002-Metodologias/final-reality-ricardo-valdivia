@@ -18,11 +18,11 @@ import org.jetbrains.annotations.NotNull;
 public abstract class AbstractCharacter implements ICharacter {
 
   protected final BlockingQueue<ICharacter> turnsQueue;
-  protected final String name;
+  private final String name;
   protected final CharacterClass characterClass;
   protected ScheduledExecutorService scheduledExecutor;
 
-  protected AbstractCharacter(@NotNull BlockingQueue<ICharacter> turnsQueue,
+  public AbstractCharacter(@NotNull BlockingQueue<ICharacter> turnsQueue,
       @NotNull String name, CharacterClass characterClass) {
     this.turnsQueue = turnsQueue;
     this.name = name;
@@ -36,6 +36,10 @@ public abstract class AbstractCharacter implements ICharacter {
   public void addToQueue() {
     turnsQueue.add(this);
     scheduledExecutor.shutdown();
+  }
+
+  public String getName() {
+    return name;
   }
 
 }
