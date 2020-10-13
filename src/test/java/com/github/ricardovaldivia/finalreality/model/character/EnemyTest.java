@@ -2,9 +2,12 @@ package com.github.ricardovaldivia.finalreality.model.character;
 
 import com.github.ricardovaldivia.finalreality.model.character.player.CharacterClass;
 import com.github.ricardovaldivia.finalreality.model.character.player.PlayerCharacter;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EnemyTest extends AbstractCharacterTest {
 
@@ -45,5 +48,10 @@ class EnemyTest extends AbstractCharacterTest {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+  }
+  @Test
+  void getCharacterClassTest(){
+    var Enemy = new Enemy(ENEMY_NAME, 11, turns);
+    assertEquals(CharacterClass.ENEMY,Enemy.getCharacterClass());
   }
 }

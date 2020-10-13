@@ -12,8 +12,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A class that holds all the information of a single enemy of the game.
  *
- * @author Ignacio Slater Muñoz
- * @author <Your name>
+ * @author Ignacio Slater Muñoz.
+ * @author Ricardo Valdivia Orellana.
  */
 public class Enemy extends AbstractCharacter {
 
@@ -44,7 +44,7 @@ public class Enemy extends AbstractCharacter {
 
   @Override
   public CharacterClass getCharacterClass() {
-    return null;
+    return CharacterClass.ENEMY;
   }
 
 

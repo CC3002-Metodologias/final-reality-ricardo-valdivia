@@ -38,6 +38,11 @@ class MagicianPlayerCharacterTest extends PlayerCharacterTest {
     @Test
     void constructorTest() {
         var enemy = new Enemy("Enemy", 10, turns);
+        var expectedBlackMagician = new MagicianPlayerCharacter(BLACK_MAGE_NAME, turns,CharacterClass.BLACK_MAGE,50);
+        var OtherBlackMagicianName = new MagicianPlayerCharacter(WHITE_MAGE_NAME, turns,CharacterClass.BLACK_MAGE,50);
+        var OtherBlackMagicianClass = new MagicianPlayerCharacter(BLACK_MAGE_NAME, turns,CharacterClass.WHITE_MAGE,50);
+        var OtherBlackMagicianMana = new MagicianPlayerCharacter(BLACK_MAGE_NAME, turns,CharacterClass.BLACK_MAGE,80);
+
         for (var character :
                 testCharacters) {
             var characterClass = character.getCharacterClass();
@@ -50,6 +55,10 @@ class MagicianPlayerCharacterTest extends PlayerCharacterTest {
                                     : CharacterClass.THIEF));
             assertNotEquals(character, enemy);
         }
+
+        assertNotEquals(expectedBlackMagician, OtherBlackMagicianName);
+        assertNotEquals(expectedBlackMagician, OtherBlackMagicianClass);
+        assertNotEquals(expectedBlackMagician, OtherBlackMagicianMana);
 
     }
 

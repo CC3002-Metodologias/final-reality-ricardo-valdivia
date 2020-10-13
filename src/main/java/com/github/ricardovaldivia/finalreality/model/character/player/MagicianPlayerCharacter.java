@@ -6,6 +6,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
+
+/**
+ * A class that holds all the information of a single MagicianCharacter of the game.
+ *
+ * @author Ignacio Slater Muñoz.
+ * @author Ricardo Valdivia Orellana.
+ *
+ */
 public class MagicianPlayerCharacter extends PlayerCharacter {
 
     /**
@@ -21,13 +29,14 @@ public class MagicianPlayerCharacter extends PlayerCharacter {
      */
     private final int mana;
 
-
-
     public MagicianPlayerCharacter(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue, CharacterClass characterClass, final int manaCharacter) {
         super(name, turnsQueue, characterClass);
         mana = manaCharacter;
     }
 
+    /**
+     * Returns the mana of this character.
+     */
     public int getMana() {
         return mana;
     }
@@ -47,7 +56,8 @@ public class MagicianPlayerCharacter extends PlayerCharacter {
         }
         final MagicianPlayerCharacter that = (MagicianPlayerCharacter) o;
         return getCharacterClass() == that.getCharacterClass()
-                && getName().equals(that.getName());
+                && getName().equals(that.getName()) &&
+                getMana() == that.getMana();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.github.ricardovaldivia.finalreality.model.weapon;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +37,11 @@ class WeaponTest {
     var expectedSword = new Weapon(SWORD_NAME, DAMAGE, SPEED, WeaponType.SWORD);
     var expectedBow = new Weapon(BOW_NAME, DAMAGE, SPEED, WeaponType.BOW);
     var expectedKnife = new Weapon(KNIFE_NAME, DAMAGE, SPEED, WeaponType.KNIFE);
+    var expected_not_Knife = new Weapon(KNIFE_NAME, DAMAGE, SPEED, WeaponType.BOW);
+    var OtherAxeName = new Weapon(KNIFE_NAME, DAMAGE, SPEED, WeaponType.AXE);
+    var OtherStaffWeight = new Weapon(KNIFE_NAME, DAMAGE, SPEED+10, WeaponType.AXE);
+    var OtherSwordDamage = new Weapon(SWORD_NAME, DAMAGE+10 , SPEED, WeaponType.SWORD);
+
 
     assertEquals(expectedAxe, testAxe);
     assertEquals(expectedAxe.hashCode(), testAxe.hashCode());
@@ -48,5 +53,10 @@ class WeaponTest {
     assertEquals(expectedBow.hashCode(), testBow.hashCode());
     assertEquals(expectedKnife, testKnife);
     assertEquals(expectedKnife.hashCode(), testKnife.hashCode());
+    assertNotEquals(expectedKnife,new Object());
+    assertNotEquals(expectedKnife,expected_not_Knife);
+    assertNotEquals(expectedAxe,OtherAxeName);
+    assertNotEquals(expectedStaff,OtherStaffWeight);
+    assertNotEquals(expectedSword,OtherSwordDamage);
   }
 }

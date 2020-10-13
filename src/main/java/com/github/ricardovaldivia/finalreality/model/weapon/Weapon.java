@@ -6,7 +6,7 @@ import java.util.Objects;
  * A class that holds all the information of a weapon.
  *
  * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * @author Ricardo Valdivia Orellana.
  */
 public class Weapon {
 
@@ -28,18 +28,30 @@ public class Weapon {
     this.type = type;
   }
 
+  /**
+   * Returns the name of this weapon.
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * Returns the physical damage of this weapon.
+   */
   public int getPhysicalDamage() {
     return physicalDamage;
   }
 
+  /**
+   * Returns the weigh of this weapon.
+   */
   public int getWeight() {
     return weight;
   }
 
+  /**
+   * Returns the type of this weapon.
+   */
   public WeaponType getType() {
     return type;
   }

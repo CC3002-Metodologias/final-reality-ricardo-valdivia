@@ -2,19 +2,27 @@ package com.github.ricardovaldivia.finalreality.model.weapon;
 
 import java.util.Objects;
 
+/**
+ * A class that holds all the information of a MixWeapon. That it have magic damage.
+ *
+ * @author Ignacio Slater Muñoz.
+ * @author Ricardo Valdivia Orellana.
+ */
 public class MixWeapon extends Weapon {
     private final int magicDamage;
 
     /**
-     * Creates a weapon with a name, a physical damage, speed and it's magic damage.
+     * Creates a weapon with a name, a physical damage, speed and his magic damage.
      *
      * @see WeaponType
      */
-    public MixWeapon(final String name, final int phisicalDamage, final int weight, final int weaponMixDamage) {
-        super(name, phisicalDamage, weight, WeaponType.BOW);
+    public MixWeapon(final String name, final int physicalDamage, final int weight, final int weaponMixDamage) {
+        super(name, physicalDamage, weight, WeaponType.BOW);
         magicDamage = weaponMixDamage;
     }
-
+    /**
+     * Returns the magic damage of this weapon.
+     */
     public int getMagicDamage() {
         return magicDamage;
     }
@@ -31,12 +39,11 @@ public class MixWeapon extends Weapon {
         return getPhysicalDamage() == weapon.getPhysicalDamage() &&
                 getWeight() == weapon.getWeight() &&
                 getName().equals(weapon.getName()) &&
-                getType() == weapon.getType() &&
                 getMagicDamage() == weapon.getMagicDamage();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getPhysicalDamage(), getWeight(), getType(),getMagicDamage());
+        return Objects.hash(getName(), getPhysicalDamage(), getWeight(),getMagicDamage());
     }
 }

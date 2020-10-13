@@ -24,10 +24,19 @@ class MixWeaponTest {
     @Test
     void constructorTest() {
         var expectedBow = new MixWeapon(BOW_NAME, PHYSICAL_DAMAGE, SPEED, MAGICAL_DAMAGE);
+        var OtherBowName = new MixWeapon(KNIFE_NAME, PHYSICAL_DAMAGE, SPEED, MAGICAL_DAMAGE);
+        var OtherBowPhysicalDamage = new MixWeapon(BOW_NAME, PHYSICAL_DAMAGE+10, SPEED, MAGICAL_DAMAGE);
+        var OtherBowMagicDamage = new MixWeapon(BOW_NAME, PHYSICAL_DAMAGE, SPEED, MAGICAL_DAMAGE+10);
+        var OtherBowSpeed = new MixWeapon(BOW_NAME, PHYSICAL_DAMAGE, SPEED+10, MAGICAL_DAMAGE);
+
         assertEquals(expectedBow, testBow);
         assertEquals(testBow, testBow);
         assertNotEquals(expectedBow, testKnife);
         assertEquals(expectedBow.hashCode(), testBow.hashCode());
+        assertNotEquals(expectedBow,OtherBowName);
+        assertNotEquals(expectedBow,OtherBowPhysicalDamage);
+        assertNotEquals(expectedBow,OtherBowMagicDamage);
+        assertNotEquals(expectedBow,OtherBowSpeed);
 
     }
 }
