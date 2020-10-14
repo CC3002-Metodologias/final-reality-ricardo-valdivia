@@ -26,7 +26,7 @@ Description
 The model for the Character implements a Interface, follow by an Abstract Class which one has two subclasses:
 
 1. The Enemy Class, which use the Abstract Clas for his constructor and is specified for Enemy CharacterClass type
-2. Player Character, has the attributes and contructor that all the Character's Class type has, which means Knight, Engineer, Thief,Black Mage, White Mage.The attributtes of this class are: Name, the character's name ; TurnsQueue, the queue with the characters waiting for their turn ; characterClass, the class of this character. This one also have a subclass for the Magicians, because they have a particule atribbute which is the mana.
+2. Player Character, has the attributes and contructor that all the Character's Class type has, which means Knight, Engineer, Thief,Black Mage, White Mage. The attributtes of this class are: Name, the character's name ; TurnsQueue, the queue with the characters waiting for their turn ; characterClass, the class of this character. This one also have a subclass for the Magicians, because they have a particule atribbute which is the mana.
 
 The model for the Weapons, just have 2 Classes:
 
