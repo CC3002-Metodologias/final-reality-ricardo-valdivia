@@ -17,7 +17,7 @@ public class MixWeapon extends Weapon {
      * @see WeaponType
      */
     public MixWeapon(final String name, final int physicalDamage, final int weight, final int weaponMixDamage) {
-        super(name, physicalDamage, weight, WeaponType.BOW);
+        super(name, physicalDamage, weight, WeaponType.STAFF);
         magicDamage = weaponMixDamage;
     }
     /**
