@@ -28,28 +28,9 @@ public abstract class AbstractCharacterTest {
   /**
    * Checks that the character waits the appropriate amount of time for it's turn.
    */
-  @Test
-  void waitTurnTest() {
-    Assertions.assertTrue(turns.isEmpty());
-    tryToEquip(testCharacters.get(0));
-    testCharacters.get(0).waitTurn();
-    try {
-      // Thread.sleep is not accurate so this values may be changed to adjust the
-      // acceptable error margin.
-      // We're testing that the character waits approximately 1 second.
-      Thread.sleep(900);
-      Assertions.assertEquals(0, turns.size());
-      Thread.sleep(200);
-      Assertions.assertEquals(1, turns.size());
-      Assertions.assertEquals(testCharacters.get(0), turns.peek());
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-  }
 
-  private void tryToEquip(ICharacter character) {
-    character.equip(testWeapon);
-  }
+
+
 
   protected void checkConstruction(final ICharacter expectedCharacter,
       final ICharacter testEqualCharacter,

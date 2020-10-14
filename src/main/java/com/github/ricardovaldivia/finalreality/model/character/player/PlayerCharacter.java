@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  * A class that holds all the information of a single character of the game.
  *
  * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * @author Ricardo Valdivia Orellana.
  */
 public class PlayerCharacter extends AbstractCharacter {
 
@@ -22,17 +22,17 @@ public class PlayerCharacter extends AbstractCharacter {
    * Creates a new character.
    *
    * @param name
-   *     the character's name
+   * the character's name
    * @param turnsQueue
-   *     the queue with the characters waiting for their turn
+   * the queue with the characters waiting for their turn
    * @param characterClass
-   *     the class of this character
+   * the class of this character
    */
   private Weapon equippedWeapon = null;
 
   public PlayerCharacter(@NotNull String name,
-      @NotNull BlockingQueue<ICharacter> turnsQueue,
-      final CharacterClass characterClass) {
+                         @NotNull BlockingQueue<ICharacter> turnsQueue,
+                         final CharacterClass characterClass) {
     super(turnsQueue, name, characterClass);
   }
 
@@ -51,25 +51,26 @@ public class PlayerCharacter extends AbstractCharacter {
     }
     final PlayerCharacter that = (PlayerCharacter) o;
     return getCharacterClass() == that.getCharacterClass()
-        && getName().equals(that.getName());
+            && getName().equals(that.getName());
   }
 
-  @Override
-  public String getName() {
-    return name;
-  }
-
-  @Override
+  /**
+   * Set the weapon to a character.
+   */
   public void equip(Weapon weapon) {
       this.equippedWeapon = weapon;
   }
 
-  @Override
+  /**
+   * Returns the weapon equipped of this character.
+   */
   public Weapon getEquippedWeapon() {
     return equippedWeapon;
   }
 
-  @Override
+  /**
+   * Returns the CharacterClass of this character.
+   */
   public CharacterClass getCharacterClass() {
     return characterClass;
   }

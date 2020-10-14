@@ -6,12 +6,12 @@ import java.util.Objects;
  * A class that holds all the information of a weapon.
  *
  * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * @author Ricardo Valdivia Orellana.
  */
 public class Weapon {
 
   private final String name;
-  private final int phisicalDamage;
+  private final int physicalDamage;
   private final int weight;
   private final WeaponType type;
 
@@ -23,24 +23,36 @@ public class Weapon {
   public Weapon(final String name, final int damage, final int weight,
       final WeaponType type) {
     this.name = name;
-    this.phisicalDamage = damage;
+    this.physicalDamage = damage;
     this.weight = weight;
     this.type = type;
   }
 
-  private String getName() {
+  /**
+   * Returns the name of this weapon.
+   */
+  public String getName() {
     return name;
   }
 
-  private int getPhisicalDamage() {
-    return phisicalDamage;
+  /**
+   * Returns the physical damage of this weapon.
+   */
+  public int getPhysicalDamage() {
+    return physicalDamage;
   }
 
+  /**
+   * Returns the weigh of this weapon.
+   */
   public int getWeight() {
     return weight;
   }
 
-  private WeaponType getType() {
+  /**
+   * Returns the type of this weapon.
+   */
+  public WeaponType getType() {
     return type;
   }
 
@@ -53,7 +65,7 @@ public class Weapon {
       return false;
     }
     final Weapon weapon = (Weapon) o;
-    return getPhisicalDamage() == weapon.getPhisicalDamage() &&
+    return getPhysicalDamage() == weapon.getPhysicalDamage() &&
         getWeight() == weapon.getWeight() &&
         getName().equals(weapon.getName()) &&
         getType() == weapon.getType();
@@ -61,6 +73,6 @@ public class Weapon {
 
   @Override
   public int hashCode() {
-    return Objects.hash(getName(), getPhisicalDamage(), getWeight(), getType());
+    return Objects.hash(getName(), getPhysicalDamage(), getWeight(), getType());
   }
 }

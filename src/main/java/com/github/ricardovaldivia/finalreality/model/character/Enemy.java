@@ -6,13 +6,14 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import com.github.ricardovaldivia.finalreality.model.weapon.Weapon;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * A class that holds all the information of a single enemy of the game.
  *
- * @author Ignacio Slater Muñoz
- * @author <Your name>
+ * @author Ignacio Slater Muñoz.
+ * @author Ricardo Valdivia Orellana.
  */
 public class Enemy extends AbstractCharacter {
 
@@ -37,9 +38,23 @@ public class Enemy extends AbstractCharacter {
 
   @Override
   public void waitTurn() {
-    var enemy = (Enemy) this;
-    scheduledExecutor
-            .schedule(this::addToQueue, enemy.getWeight() / 10, TimeUnit.SECONDS);
+    scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
+    scheduledExecutor.schedule(this::addToQueue, this.getWeight() / 10, TimeUnit.SECONDS);
+  }
+
+  @Override
+  public CharacterClass getCharacterClass() {
+    return CharacterClass.ENEMY;
+  }
+
+
+  @Override
+  public void equip(Weapon testWeapon) {
+  }
+
+  @Override
+  public Weapon getEquippedWeapon() {
+    return null;
   }
 
   @Override
