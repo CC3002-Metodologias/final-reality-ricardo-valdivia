@@ -1,12 +1,10 @@
 package com.github.ricardovaldivia.finalreality.model.character;
 
-import com.github.ricardovaldivia.finalreality.model.character.player.CharacterClass;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import com.github.ricardovaldivia.finalreality.model.weapon.Weapon;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -18,15 +16,17 @@ import org.jetbrains.annotations.NotNull;
 public class Enemy extends AbstractCharacter {
 
   private final int weight;
+  private final int attack;
 
   /**
    * Creates a new enemy with a name, a weight and the queue with the characters ready to
    * play.
    */
   public Enemy(@NotNull final String name, final int weight,
-      @NotNull final BlockingQueue<ICharacter> turnsQueue) {
-    super(turnsQueue, name, CharacterClass.ENEMY);
+      @NotNull final BlockingQueue<ICharacter> turnsQueue,int maxHealth , int defense, int attack) {
+    super(turnsQueue, name, maxHealth, defense);
     this.weight = weight;
+    this.attack = attack;
   }
 
   /**
@@ -36,6 +36,13 @@ public class Enemy extends AbstractCharacter {
     return weight;
   }
 
+  /**
+   * Returns the attack of this enemy.
+   */
+  public int getAttack() {
+    return attack;
+  }
+
   @Override
   public void waitTurn() {
     scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -43,18 +50,8 @@ public class Enemy extends AbstractCharacter {
   }
 
   @Override
-  public CharacterClass getCharacterClass() {
-    return CharacterClass.ENEMY;
-  }
-
-
-  @Override
-  public void equip(Weapon testWeapon) {
-  }
-
-  @Override
-  public Weapon getEquippedWeapon() {
-    return null;
+  public void attack(ICharacter character) {
+    character.attackByEnemy(this);
   }
 
   @Override
@@ -66,11 +63,14 @@ public class Enemy extends AbstractCharacter {
       return false;
     }
     final Enemy enemy = (Enemy) o;
-    return getWeight() == enemy.getWeight();
+    return getWeight() == enemy.getWeight() &&
+          getDefense() == enemy.getDefense() &&
+          getMaxHealth() == enemy.getMaxHealth() &&
+          getAttack() == enemy.getAttack();
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getWeight());
+    return Objects.hash(getWeight(), getMaxHealth(), getAttack(), getDefense());
   }
 }

@@ -1,7 +1,6 @@
 package com.github.ricardovaldivia.finalreality.model.character;
 
-import com.github.ricardovaldivia.finalreality.model.character.player.CharacterClass;
-import com.github.ricardovaldivia.finalreality.model.weapon.Weapon;
+import com.github.ricardovaldivia.finalreality.model.character.player.classes.*;
 
 /**
  * This represents a character from the game.
@@ -11,7 +10,6 @@ import com.github.ricardovaldivia.finalreality.model.weapon.Weapon;
  * @author <Your name>
  */
 public interface ICharacter {
-
   /**
    * Sets a scheduled executor to make this character (thread) wait for {@code speed / 10}
    * seconds before adding the character to the queue.
@@ -23,9 +21,50 @@ public interface ICharacter {
    */
   String getName();
 
-  CharacterClass getCharacterClass();
+  /**
+   *
+   * Returns this character's defense
+   */
+  int getDefense();
 
-  void equip(Weapon testWeapon);
+  /**
+   * Returns this character's MaxHealth
+   */
+  int getMaxHealth();
 
-  Weapon getEquippedWeapon();
+  /**
+   * Returns this character's CurrentHealth
+   */
+  int getCurrentHealth();
+
+  void setCurrentHealth(int newHealth);
+
+  void setAlive(boolean alive);
+
+
+  void attack(ICharacter character);
+
+  /**
+   * Returns the current character's status
+   */
+  boolean isAlive();
+
+  /**
+   * Decrease this character's health an amount of damage
+   */
+  void attackBy(int damage);
+
+  void attackByEnemy(Enemy enemy);
+
+  void attackByBlackMage(BlackMage blackMage);
+
+  void attackByWhiteMage(WhiteMage whiteMage);
+
+  void attackByKnight(Knight knight);
+
+  void attackByEngineer(Engineer engineer);
+
+  void attackByThief(Thief thief);
+
 }
+

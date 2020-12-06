@@ -1,10 +1,10 @@
 package com.github.ricardovaldivia;
 
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
-import com.github.ricardovaldivia.finalreality.model.character.player.CharacterClass;
-import com.github.ricardovaldivia.finalreality.model.character.player.PlayerCharacter;
-import com.github.ricardovaldivia.finalreality.model.weapon.Weapon;
-import com.github.ricardovaldivia.finalreality.model.weapon.WeaponType;
+import com.github.ricardovaldivia.finalreality.model.character.player.classes.Thief;
+import com.github.ricardovaldivia.finalreality.model.weapon.Bow;
+import com.github.ricardovaldivia.finalreality.model.weapon.Knife;
+
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -19,9 +19,8 @@ public class TimerExample {
     Random rng = new Random();
     for (int i = 0; i < 10; i++) {
       // Gives a random speed to each character to generate different waiting times
-      var weapon = new Weapon("", 0, rng.nextInt(50), WeaponType.KNIFE);
-      var character = new PlayerCharacter(Integer.toString(i), queue,
-          CharacterClass.THIEF);
+      var weapon = new Bow("", 0, rng.nextInt(50));
+      var character = new Thief(Integer.toString(i), queue, rng.nextInt(20), rng.nextInt(30));
       character.equip(weapon);
       character.waitTurn();
     }
