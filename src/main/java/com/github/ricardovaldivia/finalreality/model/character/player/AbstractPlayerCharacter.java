@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A class that holds all the information of a single character of the game.
+ * A class that holds all the information of a single playerCharacter of the game.
  *
  * @author Ignacio Slater Muñoz.
  * @author Ricardo Valdivia Orellana.
@@ -28,6 +28,8 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
    *     the character's name
    * @param turnsQueue
    *     the queue with the characters waiting for their turn
+   * @param maxHealth
+   *     the character's maxHealth
    * @param defense
    *     the character's defense
    */

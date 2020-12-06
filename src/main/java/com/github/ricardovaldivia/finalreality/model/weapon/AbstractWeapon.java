@@ -3,6 +3,7 @@ package com.github.ricardovaldivia.finalreality.model.weapon;
 
 import com.github.ricardovaldivia.finalreality.model.character.player.classes.*;
 
+
 public abstract class AbstractWeapon implements IWeapon {
 
   private final String name;

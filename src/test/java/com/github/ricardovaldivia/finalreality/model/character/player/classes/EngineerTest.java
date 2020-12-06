@@ -15,6 +15,10 @@ class EngineerTest extends AbstractPlayerCharacterTest {
   private int defense;
   private Engineer testEngineerCharacter;
 
+
+  /**
+   * Set the basics setup for each test in this class.
+   */
   @BeforeEach
   void setUp() {
     var seed = new Random().nextInt();
@@ -37,6 +41,10 @@ class EngineerTest extends AbstractPlayerCharacterTest {
         new Engineer(ENGINEER_NAME, turns, r.nextInt(50)+51, defense),
         new Engineer(ENGINEER_NAME, turns, maxHealth, r.nextInt(30)+31));
   }
+
+  /**
+   * Checks that the class' equip method works properly.
+   */
   @RepeatedTest(600)
   void equipTest(){
     assertFalse(testEngineerCharacter.isEquipped());
@@ -52,6 +60,9 @@ class EngineerTest extends AbstractPlayerCharacterTest {
     assertFalse(testEngineerCharacter.isEquipped());
   }
 
+  /**
+   * Checks that the class' attack method works properly.
+   */
   @RepeatedTest(1000)
   void attackByEngineerTest(){
     var playerCharacterTest = new Thief("Thief", turns, r.nextInt(60), r.nextInt(30));

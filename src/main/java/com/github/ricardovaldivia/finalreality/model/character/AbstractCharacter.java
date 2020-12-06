@@ -22,6 +22,19 @@ public abstract class AbstractCharacter implements ICharacter {
   private boolean alive;
   protected ScheduledExecutorService scheduledExecutor;
 
+  /**
+   * Creates a new character.
+   *
+   * @param name
+   *     the character's name
+   * @param turnsQueue
+   *     the queue with the characters waiting for their turn
+   * @param maxHealth
+   *     the character's maxHealth
+   * @param defense
+   *     the character's defense
+   */
+
   public AbstractCharacter(@NotNull BlockingQueue<ICharacter> turnsQueue,
                            @NotNull String name, int maxHealth, int defense) {
     this.turnsQueue = turnsQueue;
@@ -30,7 +43,6 @@ public abstract class AbstractCharacter implements ICharacter {
     this.defense = defense;
     this.maxHealth = maxHealth;
     this.currentHealth = maxHealth;
-
   }
 
   /**
@@ -87,8 +99,6 @@ public abstract class AbstractCharacter implements ICharacter {
   @Override
   public void attackByEnemy(Enemy enemy){
     this.attackBy(enemy.getAttack());
-
-
   }
 
   @Override

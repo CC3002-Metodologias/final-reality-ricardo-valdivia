@@ -5,6 +5,12 @@ import com.github.ricardovaldivia.finalreality.model.character.player.classes.Kn
 
 import java.util.Objects;
 
+/**
+ * A class that holds all the information of a Knife.
+ *
+ * @author Ignacio Slater Muñoz.
+ * @author Ricardo Valdivia Orellana.
+ */
 public class Knife extends AbstractWeapon{
 
   /**

@@ -15,6 +15,10 @@ class ThiefTest extends AbstractPlayerCharacterTest {
   private int defense;
   private Thief testThiefCharacter;
 
+
+  /**
+   * Set the basics setup for each test in this class.
+   */
   @BeforeEach
   void setUp() {
     var seed = new Random().nextInt();
@@ -37,7 +41,9 @@ class ThiefTest extends AbstractPlayerCharacterTest {
         new Thief(THIEF_TEST, turns, r.nextInt(50) + 51, defense),
         new Thief(THIEF_TEST, turns, maxHealth, r.nextInt(30) + 31));
   }
-
+  /**
+   * Checks that the class' equip method works properly.
+   */
   @RepeatedTest(600)
   void equipTest() {
     assertFalse(testThiefCharacter.isEquipped());
@@ -53,6 +59,9 @@ class ThiefTest extends AbstractPlayerCharacterTest {
     assertTrue(testThiefCharacter.isEquipped());
   }
 
+  /**
+   * Checks that the class' attack method works properly.
+   */
   @RepeatedTest(1000)
   void attackByEngineerTest() {
     var playerCharacterTest = new Knight("Knight", turns, r.nextInt(60), r.nextInt(30));

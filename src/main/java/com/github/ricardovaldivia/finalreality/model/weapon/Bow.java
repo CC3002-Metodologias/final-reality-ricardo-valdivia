@@ -5,6 +5,12 @@ import com.github.ricardovaldivia.finalreality.model.character.player.classes.Th
 
 import java.util.Objects;
 
+/**
+ * A class that holds all the information of a Bow.
+ *
+ * @author Ignacio Slater Muñoz.
+ * @author Ricardo Valdivia Orellana.
+ */
 public class Bow extends AbstractWeapon{
   /**
    * Creates a BOW with a name, a base damage, speed and it's type.

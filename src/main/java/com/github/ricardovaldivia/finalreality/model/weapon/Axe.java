@@ -6,6 +6,12 @@ import com.github.ricardovaldivia.finalreality.model.character.player.classes.Wh
 
 import java.util.Objects;
 
+/**
+ * A class that holds all the information of a Axe.
+ *
+ * @author Ignacio Slater Muñoz.
+ * @author Ricardo Valdivia Orellana.
+ */
 public class Axe extends AbstractWeapon{
   /**
    * Creates a AXE with a name, a base damage, speed and it's type.

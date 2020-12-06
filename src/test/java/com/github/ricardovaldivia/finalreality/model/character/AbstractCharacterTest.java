@@ -21,9 +21,8 @@ public abstract class AbstractCharacterTest{
   protected BlockingQueue<ICharacter> turns;
 
   /**
-   * Checks that the character waits the appropriate amount of time for it's turn.
+   *  Checks that the character construction work properly
    */
-
   public void checkConstruction(final ICharacter expectedCharacter,
       final ICharacter testEqualCharacter,
       final ICharacter sameClassDifferentCharacter,
@@ -41,10 +40,16 @@ public abstract class AbstractCharacterTest{
     assertNotEquals(expectedCharacter, sameClassDifferentDefense);
   }
 
+  /**
+   * Set the basic Queue for the turns
+   */
   protected void basicSetUp() {
     turns = new LinkedBlockingQueue<>();
   }
 
+  /**
+   * Check if the Alive methods works properly
+   */
   @Test
   void isNotAliveTest(){
     var character = new Thief("ThiefName", turns, 30, 10);

@@ -8,9 +8,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * A class that holds all the information of a single Black Mage of the game.
+ *
+ * @author Ignacio Slater Muñoz.
+ * @author Ricardo Valdivia Orellana.
+ */
 public class BlackMage extends AbstractPlayerCharacter {
   /**
-   * Creates a new character.
+   * Creates a new Black Mage.
    *
    * @param name       the character's name
    * @param turnsQueue

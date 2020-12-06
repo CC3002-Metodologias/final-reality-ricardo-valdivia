@@ -7,7 +7,7 @@ import com.github.ricardovaldivia.finalreality.model.character.player.classes.*;
  * A character can be controlled by the player or by the CPU (an enemy).
  *
  * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * @author Ricardo Valdivia Orellana.
  */
 public interface ICharacter {
   /**
@@ -37,11 +37,19 @@ public interface ICharacter {
    */
   int getCurrentHealth();
 
+  /**
+   * Set the current character health.
+   */
   void setCurrentHealth(int newHealth);
 
+  /**
+   * Set the current character status.
+   */
   void setAlive(boolean alive);
 
-
+  /**
+   * Generates the an attack.
+   */
   void attack(ICharacter character);
 
   /**
@@ -54,16 +62,34 @@ public interface ICharacter {
    */
   void attackBy(int damage);
 
+  /**
+   * Generates the attack by an Enemy.
+   */
   void attackByEnemy(Enemy enemy);
 
+  /**
+   * Generates the attack by a BlackMage.
+   */
   void attackByBlackMage(BlackMage blackMage);
 
+  /**
+   * Generates the attack by a WhiteMage.
+   */
   void attackByWhiteMage(WhiteMage whiteMage);
 
+  /**
+   * Generates the attack by a Knight.
+   */
   void attackByKnight(Knight knight);
 
+  /**
+   * Generates the attack by a Engineer.
+   */
   void attackByEngineer(Engineer engineer);
 
+  /**
+   * Generates the attack by a Thief.
+   */
   void attackByThief(Thief thief);
 
 }

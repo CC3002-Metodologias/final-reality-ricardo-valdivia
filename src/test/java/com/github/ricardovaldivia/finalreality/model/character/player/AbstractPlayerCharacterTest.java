@@ -41,7 +41,9 @@ public class AbstractPlayerCharacterTest extends AbstractCharacterTest {
   }
 
 
-
+  /**
+   * Checks that the character waits the appropriate amount of time for it's turn.
+   */
   @Test
   void waitTurnTest() {
     super.basicSetUp();
@@ -63,9 +65,4 @@ public class AbstractPlayerCharacterTest extends AbstractCharacterTest {
       e.printStackTrace();
     }
   }
-
-  @Test
-  void equipWeaponTest() {
-
-    }
 }

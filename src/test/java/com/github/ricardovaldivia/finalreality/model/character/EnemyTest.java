@@ -13,12 +13,18 @@ class EnemyTest extends AbstractCharacterTest {
   private static final String ENEMY_NAME = "Goblin";
   private static Enemy testEnemy;
 
+  /**
+   * Set the basics setup for each test in this class.
+   */
   @BeforeEach
   void setUp() {
     basicSetUp();
     testEnemy = new Enemy(ENEMY_NAME, 10, turns, 30, 10, 5);
   }
 
+  /**
+   *  Checks that the Enemy construction work properly
+   */
   public void checkEnemyConstruction(final ICharacter expectedCharacter,
                                    final ICharacter testEqualCharacter,
                                    final ICharacter sameClassDifferentCharacter,
@@ -34,6 +40,9 @@ class EnemyTest extends AbstractCharacterTest {
     assertNotEquals(expectedCharacter, sameClassDifferentAttack);
   }
 
+  /**
+   *  Checks that the Enemy construction work properly for a variety of enemy's
+   */
   @Test
   void constructorTest() {
     checkEnemyConstruction(new Enemy(ENEMY_NAME, 10, turns,30,10,5),
@@ -46,7 +55,9 @@ class EnemyTest extends AbstractCharacterTest {
             new Enemy(ENEMY_NAME, 13, turns, 30, 10, 5),
             new Enemy(ENEMY_NAME, 10, turns, 30, 10, 4));
   }
-
+  /**
+   * Checks that the enemy waits the appropriate amount of time for it's turn.
+   */
   @Test
   void waitTurnTest() {
     Assertions.assertTrue(turns.isEmpty());
@@ -65,6 +76,9 @@ class EnemyTest extends AbstractCharacterTest {
     }
   }
 
+  /**
+   * Checks that the enemy attack work properly.
+   */
   @Test
   void enemyAttackTest(){
     var playerCharacter = new Thief("Thief", turns, 6, 1);

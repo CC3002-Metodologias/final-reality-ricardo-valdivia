@@ -14,6 +14,9 @@ class StaffTest extends AbstractWeaponTest{
   private Staff testStaffWeapon;
   private int magicDamage;
 
+  /**
+   * Set the basics setup for each test in this class.
+   */
   @BeforeEach
   void setUp() {
     var seed =  new Random().nextInt();
@@ -23,6 +26,10 @@ class StaffTest extends AbstractWeaponTest{
     magicDamage = r.nextInt(50);
     testStaffWeapon = new Staff(STAFF_NAME, physicalDamage, weight,magicDamage);
   }
+
+  /**
+   * Checks that the Staff constructor and equals method works properly.
+   */
   public void checkStaffConstruction(final IWeapon expectedWeapon,
                                 final IWeapon testEqualWeapon,
                                 final IWeapon sameClassDifferentWeapon,

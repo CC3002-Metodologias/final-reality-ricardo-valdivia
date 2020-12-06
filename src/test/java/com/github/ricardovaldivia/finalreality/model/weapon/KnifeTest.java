@@ -12,6 +12,9 @@ class KnifeTest extends AbstractWeaponTest{
   private int physicalDamage;
   private Knife testKnifeWeapon;
 
+  /**
+   * Set the basics setup for each test in this class.
+   */
   @BeforeEach
   void setUp() {
     var seed =  new Random().nextInt();

@@ -20,13 +20,28 @@ public interface IWeapon {
    */
   int getWeight();
 
+  /**
+   * Returns the weapon that will be equipped by a BlackMage.
+   */
   IWeapon equippedByBlackMage(BlackMage blackMage);
 
+  /**
+   * Returns the weapon that will be equipped by a WhiteMage.
+   */
   IWeapon equippedByWhiteMage(WhiteMage whiteMage);
 
+  /**
+   * Returns the weapon that will be equipped by an Engineer.
+   */
   IWeapon equippedByEngineer(Engineer engineer);
 
+  /**
+   * Returns the weapon that will be equipped by a Thief.
+   */
   IWeapon equippedByThief(Thief thief);
 
+  /**
+   * Returns the weapon that will be equipped by a Knight.
+   */
   IWeapon equippedByKnight(Knight knight);
 }

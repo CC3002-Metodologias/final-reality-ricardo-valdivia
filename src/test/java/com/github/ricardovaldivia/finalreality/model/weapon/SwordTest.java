@@ -12,6 +12,9 @@ class SwordTest extends AbstractWeaponTest{
   private int physicalDamage;
   private Sword testSwordWeapon;
 
+  /**
+   * Set the basics setup for each test in this class.
+   */
   @BeforeEach
   void setUp() {
     var seed =  new Random().nextInt();

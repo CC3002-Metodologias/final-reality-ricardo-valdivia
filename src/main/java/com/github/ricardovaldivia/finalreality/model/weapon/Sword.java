@@ -5,6 +5,12 @@ import com.github.ricardovaldivia.finalreality.model.character.player.classes.Th
 
 import java.util.Objects;
 
+/**
+ * A class that holds all the information of a Sword.
+ *
+ * @author Ignacio Slater Muñoz.
+ * @author Ricardo Valdivia Orellana.
+ */
 public class Sword extends AbstractWeapon{
 
   /**
@@ -20,6 +26,7 @@ public class Sword extends AbstractWeapon{
   public Sword(String name, int damage, int weight) {
     super(name, damage, weight);
   }
+
   @Override
   public boolean equals(final Object o) {
     if (this == o) {

@@ -13,6 +13,9 @@ class AxeTest extends AbstractWeaponTest{
   private int physicalDamage;
   private Axe testAxeWeapon;
 
+  /**
+   * Set the basics setup for each test in this class.
+   */
   @BeforeEach
   void setUp() {
     var seed =  new Random().nextInt();

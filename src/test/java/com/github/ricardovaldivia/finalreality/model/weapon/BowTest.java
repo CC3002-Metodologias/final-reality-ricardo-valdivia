@@ -13,6 +13,9 @@ class BowTest extends AbstractWeaponTest{
   private int physicalDamage;
   private Bow testBowWeapon;
 
+  /**
+   * Set the basics setup for each test in this class.
+   */
   @BeforeEach
   void setUp() {
     var seed =  new Random().nextInt();

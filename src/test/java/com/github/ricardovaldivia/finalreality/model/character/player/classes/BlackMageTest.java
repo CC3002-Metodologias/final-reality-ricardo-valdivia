@@ -17,6 +17,9 @@ class BlackMageTest extends AbstractPlayerCharacterTest {
   private int maxMana;
   private BlackMage testBlackCharacter;
 
+  /**
+   * Set the basics setup for each test in this class.
+   */
   @BeforeEach
   void setUp() {
     var seed =  new Random().nextInt();
@@ -27,6 +30,9 @@ class BlackMageTest extends AbstractPlayerCharacterTest {
     testBlackCharacter = new BlackMage(BLACK_MAGE_NAME, turns, maxHealth, defense, maxMana);
   }
 
+  /**
+   * Checks that the BlackMage constructor and equals method works properly.
+   */
   public void checkBlackMageConstruction(ICharacter expectedCharacter,
                                    ICharacter testEqualCharacter,
                                    ICharacter sameClassDifferentCharacter,
@@ -54,6 +60,10 @@ class BlackMageTest extends AbstractPlayerCharacterTest {
         new BlackMage(BLACK_MAGE_NAME, turns, maxHealth, r.nextInt(30)+31, maxMana),
         new BlackMage(BLACK_MAGE_NAME, turns, maxHealth, defense, r.nextInt(50)+51));
   }
+
+  /**
+   * Checks that the class' equip method works properly.
+   */
   @RepeatedTest(600)
   void equipTest(){
     assertFalse(testBlackCharacter.isEquipped());
@@ -69,6 +79,9 @@ class BlackMageTest extends AbstractPlayerCharacterTest {
     assertFalse(testBlackCharacter.isEquipped());
   }
 
+  /**
+   * Checks that the class' attack method works properly.
+   */
   @RepeatedTest(600)
   void attackByBlackMageTest(){
     var playerCharacterTest = new Thief("Thief", turns, r.nextInt(60), r.nextInt(30));
@@ -80,6 +93,9 @@ class BlackMageTest extends AbstractPlayerCharacterTest {
     testBlackCharacter.attack(playerCharacterTest);
   }
 
+  /**
+   * Checks that the class' getCurrentMana and getMaxMana methods works properly.
+   */
   @Test
   void getManaTest(){
     var blackMageTest = new BlackMage(BLACK_MAGE_NAME, turns, 50, 30, 50);
