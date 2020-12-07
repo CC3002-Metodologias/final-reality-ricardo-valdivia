@@ -1,17 +1,18 @@
 package com.github.ricardovaldivia.finalreality.model.character;
 
-import com.github.ricardovaldivia.finalreality.model.character.player.CharacterClass;
-import com.github.ricardovaldivia.finalreality.model.weapon.Weapon;
+import com.github.ricardovaldivia.finalreality.model.character.player.classes.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This represents a character from the game.
  * A character can be controlled by the player or by the CPU (an enemy).
  *
  * @author Ignacio Slater Muñoz.
- * @author <Your name>
+ * @author Ricardo Valdivia Orellana.
  */
 public interface ICharacter {
-
   /**
    * Sets a scheduled executor to make this character (thread) wait for {@code speed / 10}
    * seconds before adding the character to the queue.
@@ -23,9 +24,81 @@ public interface ICharacter {
    */
   String getName();
 
-  CharacterClass getCharacterClass();
+  /**
+   *
+   * Returns this character's defense
+   */
+  int getDefense();
 
-  void equip(Weapon testWeapon);
+  /**
+   * Returns this character's MaxHealth
+   */
+  int getMaxHealth();
 
-  Weapon getEquippedWeapon();
+  /**
+   * Returns this character's CurrentHealth
+   */
+  int getCurrentHealth();
+
+  /**
+   * Set the current character health.
+   */
+  void setCurrentHealth(int newHealth);
+
+  /**
+   * Set the current character status.
+   */
+  void setAlive(boolean alive);
+
+  /**
+   * Generates the an attack.
+   */
+  void attack(ICharacter character);
+
+  /**
+   * Returns the current character's status
+   */
+  boolean isAlive();
+
+  /**
+   * Decrease this character's health an amount of damage
+   */
+  void attackBy(int damage);
+
+  /**
+   * Generates the attack by an Enemy.
+   */
+  void attackByEnemy(Enemy enemy);
+
+  /**
+   * Generates the attack by a BlackMage.
+   */
+  void attackByBlackMage(BlackMage blackMage);
+
+  /**
+   * Generates the attack by a WhiteMage.
+   */
+  void attackByWhiteMage(WhiteMage whiteMage);
+
+  /**
+   * Generates the attack by a Knight.
+   */
+  void attackByKnight(Knight knight);
+
+  /**
+   * Generates the attack by a Engineer.
+   */
+  void attackByEngineer(Engineer engineer);
+
+  /**
+   * Generates the attack by a Thief.
+   */
+  void attackByThief(Thief thief);
+
+
+  /**
+   * Returns the current status of the character.
+   */
+  HashMap<String, String> getCurrentInfo();
 }
+

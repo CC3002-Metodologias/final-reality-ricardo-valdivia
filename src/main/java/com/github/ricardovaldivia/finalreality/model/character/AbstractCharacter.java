@@ -1,8 +1,11 @@
 package com.github.ricardovaldivia.finalreality.model.character;
 
-import com.github.ricardovaldivia.finalreality.model.character.player.CharacterClass;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
+
+import com.github.ricardovaldivia.finalreality.model.character.player.classes.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -15,16 +18,34 @@ public abstract class AbstractCharacter implements ICharacter {
 
   private final BlockingQueue<ICharacter> turnsQueue;
   private final String name;
-  protected final CharacterClass characterClass;
+  private final int defense;
+  private int currentHealth;
+  private final int maxHealth;
+  private boolean alive;
   protected ScheduledExecutorService scheduledExecutor;
 
+  /**
+   * Creates a new character.
+   *
+   * @param name
+   *     the character's name
+   * @param turnsQueue
+   *     the queue with the characters waiting for their turn
+   * @param maxHealth
+   *     the character's maxHealth
+   * @param defense
+   *     the character's defense
+   */
+
   public AbstractCharacter(@NotNull BlockingQueue<ICharacter> turnsQueue,
-      @NotNull String name, CharacterClass characterClass) {
+                           @NotNull String name, int maxHealth, int defense) {
     this.turnsQueue = turnsQueue;
     this.name = name;
-    this.characterClass = characterClass;
+    this.alive = true;
+    this.defense = defense;
+    this.maxHealth = maxHealth;
+    this.currentHealth = maxHealth;
   }
-
 
   /**
    * Adds this character to the turns queue.
@@ -33,11 +54,113 @@ public abstract class AbstractCharacter implements ICharacter {
     turnsQueue.add(this);
     scheduledExecutor.shutdown();
   }
-  /**
-   * Returns the name of this character.
-   */
+  @Override
   public String getName() {
     return name;
   }
 
+  @Override
+  public int getDefense() {
+    return this.defense;
+  }
+  @Override
+  public int getMaxHealth(){
+    return this.maxHealth;
+  }
+
+  @Override
+  public int getCurrentHealth() {
+    return this.currentHealth;
+  }
+  @Override
+  public void setCurrentHealth(int newHealth) {
+    this.currentHealth = newHealth;
+  }
+  @Override
+  public void setAlive(boolean alive) {
+    this.alive = alive;
+  }
+  @Override
+  public boolean isAlive(){
+    return this.alive;
+  }
+
+  @Override
+  public void attackBy( int damage){
+    if (this.isAlive()) {
+      int finalDamage = damage - this.getDefense();
+      if (this.getCurrentHealth() - finalDamage < 0) {
+        this.setAlive(false);
+        this.setCurrentHealth(0);
+      } else {
+        this.setCurrentHealth(this.getCurrentHealth() - finalDamage);
+      }
+    }
+  }
+
+  @Override
+  public void attackByEnemy(Enemy enemy){
+    this.attackBy(enemy.getAttack());
+  }
+
+  @Override
+  public void attackByBlackMage(BlackMage blackMage) {
+    if (blackMage.isEquipped()){
+      this.attackBy(blackMage.getEquippedWeapon().getPhysicalDamage());
+    }
+    else{
+        this.attackBy(0);
+    }
+  }
+
+  @Override
+  public void attackByWhiteMage(WhiteMage whiteMage) {
+    if (whiteMage.isEquipped()){
+      this.attackBy(whiteMage.getEquippedWeapon().getPhysicalDamage());
+    }
+    else{
+      this.attackBy(0);
+    }
+  }
+
+  @Override
+  public void attackByKnight(Knight knight) {
+    if (knight.isEquipped()){
+      this.attackBy(knight.getEquippedWeapon().getPhysicalDamage());
+    }
+    else{
+      this.attackBy(0);
+    }
+  }
+
+  @Override
+  public void attackByEngineer(Engineer engineer) {
+    if (engineer.isEquipped()){
+      this.attackBy(engineer.getEquippedWeapon().getPhysicalDamage());
+    }
+    else{
+      this.attackBy(0);
+    }
+  }
+
+  @Override
+  public void attackByThief(Thief thief) {
+    if (thief.isEquipped()){
+      this.attackBy(thief.getEquippedWeapon().getPhysicalDamage());
+    }
+    else{
+      this.attackBy(0);
+    }
+  }
+
+  @Override
+  public HashMap<String, String> getCurrentInfo() {
+    var info = new HashMap<String, String>();
+    info.put("Name",this.getName());
+    info.put("maxHealth",String.valueOf(this.getMaxHealth()));
+    info.put("currentHealth",String.valueOf(this.getCurrentHealth()));
+    info.put("defense",String.valueOf(this.getDefense()));
+    info.put("status",String.valueOf(this.isAlive()));
+    return info;
+  }
 }
