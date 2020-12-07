@@ -16,7 +16,7 @@ import java.util.concurrent.BlockingQueue;
  * @author Ignacio Slater Muñoz.
  * @author Ricardo Valdivia Orellana.
  */
-public class BlackMage extends AbstractPlayerCharacter {
+public class BlackMage extends AbstractMageCharacter {
   /**
    * Creates a new Black Mage.
    *
@@ -24,25 +24,22 @@ public class BlackMage extends AbstractPlayerCharacter {
    * @param turnsQueue
    * @param maxMana  Max amount of mana of the WhiteMage
    */
-  private final int maxMana;
-  private int currentMana;
-
+  
   public BlackMage(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue, int maxHealth, int defense, int maxMana) {
-    super(name, turnsQueue, maxHealth, defense);
-    this.maxMana = maxMana;
-    this.currentMana = maxMana;
+    super(name, turnsQueue, maxHealth, defense, maxMana);
   }
-  /**
-   * Returns the mana of this character.
-   */
-  public int getCurrentMana() {
-    return currentMana;
-  }
-  /**
-   * Returns the maxMana of this character.
-   */
-  public int getMaxMana(){return maxMana;}
 
+  @Override
+  public void equip(IWeapon weapon) {
+    super.equip(weapon.equippedByBlackMage(this));
+  }
+
+  @Override
+  public void attack(ICharacter character) {
+    if (this.isAlive()) {
+      character.attackByBlackMage(this);
+    }
+  }
 
   @Override
   public int hashCode() {
@@ -62,27 +59,5 @@ public class BlackMage extends AbstractPlayerCharacter {
         getDefense() == that.getDefense() &&
         getMaxHealth() == that.getMaxHealth() &&
         getMaxMana() == that.getMaxMana();
-  }
-
-  @Override
-  public void equip(IWeapon weapon) {
-    super.equip(weapon.equippedByBlackMage(this));
-  }
-
-  @Override
-  public void attack(ICharacter character) {
-    if (this.isAlive()) {
-      character.attackByBlackMage(this);
-    }
-  }
-
-  /**
-   * Returns the current status of a black mage.
-   */
-  public HashMap<String, String> getCurrentInfo() {
-    var info = super.getCurrentInfo();
-    info.put("maxMana",String.valueOf(this.getMaxMana()));
-    info.put("currentMana", String.valueOf(this.getCurrentMana()));
-    return info;
   }
 }

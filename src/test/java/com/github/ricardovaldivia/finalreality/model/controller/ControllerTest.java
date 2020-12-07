@@ -167,7 +167,6 @@ class ControllerTest {
     createItems();
     var enemyInfo = controller.getCurrentInfo(testEnemy);
     var blackMageInfo = controller.getCurrentInfo(testBlackMage);
-    var whiteMageInfo = controller.getCurrentInfo(testWhiteMage);
     var knightInfo = controller.getCurrentInfo(testKnight);
     String maxHealthString = String.valueOf(maxHealth);
     String maxManaString = String.valueOf(maxMana);
@@ -195,14 +194,6 @@ class ControllerTest {
     assertEquals("false", blackMageInfo.get("EquippedWeapon"));
     assertEquals(maxManaString, blackMageInfo.get("maxMana"));
     assertEquals(maxManaString, blackMageInfo.get("currentMana"));
-    assertEquals(WHITE_MAGE_NAME, whiteMageInfo.get("Name"));
-    assertEquals(maxHealthString, whiteMageInfo.get("maxHealth"));
-    assertEquals(maxHealthString, whiteMageInfo.get("currentHealth"));
-    assertEquals(defenseString,whiteMageInfo.get("defense"));
-    assertEquals("true", whiteMageInfo.get("status"));
-    assertEquals("false", whiteMageInfo.get("EquippedWeapon"));
-    assertEquals(maxManaString,whiteMageInfo.get("maxMana"));
-    assertEquals(maxManaString, whiteMageInfo.get("currentMana"));
   }
 
   /**

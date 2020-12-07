@@ -16,7 +16,7 @@ import java.util.concurrent.BlockingQueue;
  * @author Ignacio Slater Muñoz.
  * @author Ricardo Valdivia Orellana.
  */
-public class WhiteMage extends AbstractPlayerCharacter {
+public class WhiteMage extends AbstractMageCharacter {
   /**
    * Creates a new White Mage.
    *
@@ -24,25 +24,11 @@ public class WhiteMage extends AbstractPlayerCharacter {
    * @param turnsQueue
    * @param maxMana  Max amount of mana of the WhiteMage
    */
-  private final int maxMana;
-  private int currentMana;
+
 
   public WhiteMage(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue, int maxHealth, int defense, int maxMana) {
-    super(name, turnsQueue, maxHealth,defense);
-    this.maxMana = maxMana;
-    this.currentMana = maxMana;
+    super(name, turnsQueue, maxHealth, defense, maxMana);
   }
-  /**
-   * Returns the current mana of this character.
-   */
-  public int getCurrentMana() {
-    return currentMana;
-  }
-
-  /**
-   * Returns the maximum mana of this character.
-   */
-  public int getMaxMana(){return maxMana;}
 
   @Override
   public int hashCode() {
@@ -73,15 +59,5 @@ public class WhiteMage extends AbstractPlayerCharacter {
     if (this.isAlive()) {
       character.attackByWhiteMage(this);
     }
-  }
-
-  /**
-   * Returns the current status of a white mage.
-   */
-  public HashMap<String, String> getCurrentInfo() {
-    var info = super.getCurrentInfo();
-    info.put("maxMana",String.valueOf(this.getMaxMana()));
-    info.put("currentMana", String.valueOf(this.getCurrentMana()));
-    return info;
   }
 }
