@@ -2,6 +2,9 @@ package com.github.ricardovaldivia.finalreality.model.character;
 
 import com.github.ricardovaldivia.finalreality.model.character.player.classes.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * This represents a character from the game.
  * A character can be controlled by the player or by the CPU (an enemy).
@@ -92,5 +95,10 @@ public interface ICharacter {
    */
   void attackByThief(Thief thief);
 
+
+  /**
+   * Returns the current status of the character.
+   */
+  HashMap<String, String> getCurrentInfo();
 }
 

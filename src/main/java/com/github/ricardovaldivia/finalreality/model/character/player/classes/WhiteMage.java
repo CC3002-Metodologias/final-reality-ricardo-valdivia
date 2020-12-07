@@ -5,6 +5,7 @@ import com.github.ricardovaldivia.finalreality.model.character.player.AbstractPl
 import com.github.ricardovaldivia.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
@@ -72,5 +73,15 @@ public class WhiteMage extends AbstractPlayerCharacter {
     if (this.isAlive()) {
       character.attackByWhiteMage(this);
     }
+  }
+
+  /**
+   * Returns the current status of a white mage.
+   */
+  public HashMap<String, String> getCurrentInfo() {
+    var info = super.getCurrentInfo();
+    info.put("maxMana",String.valueOf(this.getMaxMana()));
+    info.put("currentMana", String.valueOf(this.getCurrentMana()));
+    return info;
   }
 }

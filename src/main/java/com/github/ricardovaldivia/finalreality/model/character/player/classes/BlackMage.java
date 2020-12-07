@@ -2,9 +2,11 @@ package com.github.ricardovaldivia.finalreality.model.character.player.classes;
 
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
 import com.github.ricardovaldivia.finalreality.model.character.player.AbstractPlayerCharacter;
+import com.github.ricardovaldivia.finalreality.model.character.player.IPlayerCharacter;
 import com.github.ricardovaldivia.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
@@ -72,5 +74,15 @@ public class BlackMage extends AbstractPlayerCharacter {
     if (this.isAlive()) {
       character.attackByBlackMage(this);
     }
+  }
+
+  /**
+   * Returns the current status of a black mage.
+   */
+  public HashMap<String, String> getCurrentInfo() {
+    var info = super.getCurrentInfo();
+    info.put("maxMana",String.valueOf(this.getMaxMana()));
+    info.put("currentMana", String.valueOf(this.getCurrentMana()));
+    return info;
   }
 }

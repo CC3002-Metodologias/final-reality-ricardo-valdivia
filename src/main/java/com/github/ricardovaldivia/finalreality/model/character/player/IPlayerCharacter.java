@@ -1,8 +1,9 @@
 package com.github.ricardovaldivia.finalreality.model.character.player;
 
+import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
 import com.github.ricardovaldivia.finalreality.model.weapon.IWeapon;
 
-public interface IPlayerCharacter {
+public interface IPlayerCharacter extends ICharacter {
   /**
    * Equip a weapon to a character.
    */
@@ -18,4 +19,5 @@ public interface IPlayerCharacter {
    */
 
   IWeapon getEquippedWeapon();
+
 }

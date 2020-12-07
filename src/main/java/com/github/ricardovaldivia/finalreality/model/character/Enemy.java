@@ -1,5 +1,6 @@
 package com.github.ricardovaldivia.finalreality.model.character;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
@@ -73,4 +74,18 @@ public class Enemy extends AbstractCharacter {
   public int hashCode() {
     return Objects.hash(getWeight(), getMaxHealth(), getAttack(), getDefense());
   }
+
+
+  /**
+   * Returns the current status of the enemy.
+   */
+  public HashMap<String, String> getCurrentInfo() {
+   var info =  super.getCurrentInfo();
+   info.put("Attack", String.valueOf(this.getAttack()));
+   info.put("Weight", String.valueOf(this.getWeight()));
+   return info;
+  }
+
 }
+
+

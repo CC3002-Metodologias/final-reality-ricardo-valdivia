@@ -27,7 +27,7 @@ class SwordTest extends AbstractWeaponTest{
   /**
    * Checks that the class' constructor and equals method works properly.
    */
-  @RepeatedTest(600)
+  @RepeatedTest(1000)
   void constructorTest(){
     checkConstruction(new Sword(SWORD_NAME, physicalDamage, weight),
         testSwordWeapon,

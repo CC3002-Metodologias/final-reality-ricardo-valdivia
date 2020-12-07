@@ -1,5 +1,7 @@
 package com.github.ricardovaldivia.finalreality.model.character;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -149,5 +151,16 @@ public abstract class AbstractCharacter implements ICharacter {
     else{
       this.attackBy(0);
     }
+  }
+
+  @Override
+  public HashMap<String, String> getCurrentInfo() {
+    var info = new HashMap<String, String>();
+    info.put("Name",this.getName());
+    info.put("maxHealth",String.valueOf(this.getMaxHealth()));
+    info.put("currentHealth",String.valueOf(this.getCurrentHealth()));
+    info.put("defense",String.valueOf(this.getDefense()));
+    info.put("status",String.valueOf(this.isAlive()));
+    return info;
   }
 }

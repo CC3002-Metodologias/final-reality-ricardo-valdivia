@@ -46,7 +46,7 @@ class StaffTest extends AbstractWeaponTest{
   /**
    * Checks that the class' constructor and equals method works properly.
    */
-  @RepeatedTest(600)
+  @RepeatedTest(1000)
   void constructorTest(){
     checkStaffConstruction(new Staff(STAFF_NAME, physicalDamage, weight, magicDamage),
         testStaffWeapon,

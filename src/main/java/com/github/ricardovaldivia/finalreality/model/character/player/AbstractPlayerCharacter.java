@@ -1,10 +1,12 @@
 package com.github.ricardovaldivia.finalreality.model.character.player;
 
 import com.github.ricardovaldivia.finalreality.model.character.AbstractCharacter;
+import com.github.ricardovaldivia.finalreality.model.character.Enemy;
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
 import com.github.ricardovaldivia.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
@@ -63,4 +65,12 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
     return true;
   }
 
+  /**
+   * Returns the current status of a player character.
+   */
+  public HashMap<String, String> getCurrentInfo() {
+   var info = super.getCurrentInfo();
+   info.put("EquippedWeapon", String.valueOf(this.isEquipped()));
+   return info;
+  }
 }

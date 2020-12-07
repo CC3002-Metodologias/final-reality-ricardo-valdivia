@@ -31,7 +31,7 @@ class EngineerTest extends AbstractPlayerCharacterTest {
   /**
    * Checks that the class' constructor and equals method works properly.
    */
-  @RepeatedTest(600)
+  @RepeatedTest(1000)
   void constructorTest() {
     checkConstruction(new Engineer(ENGINEER_NAME, turns, maxHealth, defense),
         testEngineerCharacter,
@@ -45,7 +45,7 @@ class EngineerTest extends AbstractPlayerCharacterTest {
   /**
    * Checks that the class' equip method works properly.
    */
-  @RepeatedTest(600)
+  @RepeatedTest(1000)
   void equipTest(){
     assertFalse(testEngineerCharacter.isEquipped());
     testEngineerCharacter.equip(testWeapons.get(0));
