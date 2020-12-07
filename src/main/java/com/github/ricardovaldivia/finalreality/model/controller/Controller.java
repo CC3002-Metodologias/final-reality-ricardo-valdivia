@@ -210,5 +210,4 @@ public class Controller {
       already = !turns.isEmpty();
     } while (!already);
   }
-
 }

@@ -52,6 +52,9 @@ class ControllerTest {
   private static Knife testKnife;
   private static Staff testStaff;
 
+  /**
+   * Set the basic status with random values.
+   */
   public void setStatus(int seed){
     Random r = new Random(seed);
     maxHealth = r.nextInt(50);
@@ -64,6 +67,9 @@ class ControllerTest {
     weaponWeight = r.nextInt(30);
   }
 
+  /**
+   * Using the setStatus, create the basics elements
+   */
   @BeforeEach
   void basicSetUp(){
     controller = new Controller();
@@ -84,6 +90,9 @@ class ControllerTest {
   }
 
 
+  /**
+   * Creates item's using the controller function.
+   */
   public void createItems(){
     controller.createEnemyCharacter(ENEMY_NAME, enemyWeight, maxHealth, defense, attack);
     controller.createEngineerCharacter(ENGINEER_NAME, maxHealth, defense);
@@ -97,6 +106,10 @@ class ControllerTest {
     controller.createKnifeWeapon(KNIFE_NAME, physicalDamage, weaponWeight);
     controller.createStaffWeapon(STAFF_NAME, physicalDamage, weaponWeight, magicDamage);
   }
+
+  /**
+   * Check if the controller's functions create works properly
+   */
   @RepeatedTest(1000)
   void checkConstructionTest(){
     createItems();
@@ -115,6 +128,10 @@ class ControllerTest {
     assertTrue(testInventory.contains(testStaff));
     assertTrue(testInventory.contains(testSword));
   }
+
+  /**
+   * Check if the controller's function attack works properly
+   */
   @RepeatedTest(1000)
   void checkEquipAttackTest(){
     createItems();
@@ -142,7 +159,9 @@ class ControllerTest {
   }
 
 
-
+  /**
+   * Check if the controller's function get info works properly
+   */
   @RepeatedTest(1000)
   void checkGetInfoTest(){
     createItems();
@@ -186,6 +205,9 @@ class ControllerTest {
     assertEquals(maxManaString, whiteMageInfo.get("currentMana"));
   }
 
+  /**
+   * Check if the Turns empty work properly
+   */
   @RepeatedTest(30)
   void checkTurnsEmptyTest() {
     createItems();
@@ -196,6 +218,9 @@ class ControllerTest {
     assertFalse(controller.isTurnsEmpty());
   }
 
+  /**
+   * Check if the wait turn work properly
+   */
   @RepeatedTest(30)
   void checkWaitTurnTest() {
     createItems();
@@ -204,6 +229,9 @@ class ControllerTest {
     assertEquals(testEnemy,controller.getFirstFromQueue());
   }
 
+  /**
+   * Check if the remove from turns work properly
+   */
   @RepeatedTest(30)
   void checkRemoveFromTurnsTest() {
     createItems();
