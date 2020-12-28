@@ -1,11 +1,13 @@
 package com.github.ricardovaldivia.finalreality.model.character.player;
 
+import com.github.ricardovaldivia.finalreality.controller.handlers.IHandler;
 import com.github.ricardovaldivia.finalreality.model.character.AbstractCharacter;
 import com.github.ricardovaldivia.finalreality.model.character.Enemy;
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
 import com.github.ricardovaldivia.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
+import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
@@ -17,6 +19,8 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
     IPlayerCharacter {
 
   protected IWeapon equippedWeapon = null;
+  private final PropertyChangeSupport playerDieNotification = new PropertyChangeSupport(
+      this);
 
   /**
    * Creates a new character.
@@ -58,6 +62,19 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
       return false;
     }
     return true;
+  }
+
+  @Override
+  public void addPlayerListener(final IHandler playerDeathHandler) {
+    playerDieNotification.addPropertyChangeListener(playerDeathHandler);
+  }
+
+  @Override
+  public void setCurrentHealth(int newHealth) {
+    super.setCurrentHealth(newHealth);
+    if (newHealth <= 0){
+      playerDieNotification.firePropertyChange("PLAYER_DEATH", null, this);
+    }
   }
 
   /**

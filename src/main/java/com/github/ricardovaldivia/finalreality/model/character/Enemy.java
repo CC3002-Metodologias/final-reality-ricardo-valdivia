@@ -1,11 +1,13 @@
 package com.github.ricardovaldivia.finalreality.model.character;
 
+import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import com.github.ricardovaldivia.finalreality.controller.handlers.IHandler;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -18,6 +20,8 @@ public class Enemy extends AbstractCharacter {
 
   private final int weight;
   private final int attack;
+  private final PropertyChangeSupport enemyDieNotification = new PropertyChangeSupport(
+      this);
 
   /**
    * Creates a new enemy with a name, a weight and the queue with the characters ready to
@@ -84,6 +88,18 @@ public class Enemy extends AbstractCharacter {
    info.put("Attack", String.valueOf(this.getAttack()));
    info.put("Weight", String.valueOf(this.getWeight()));
    return info;
+  }
+
+  @Override
+  public void setCurrentHealth(int newHealth) {
+    super.setCurrentHealth(newHealth);
+    if (newHealth <= 0){
+      enemyDieNotification.firePropertyChange("ENEMY_DEATH", null, this);
+    }
+  }
+
+  public void addEnemyListener(final IHandler enemyDeathHandler) {
+    enemyDieNotification.addPropertyChangeListener(enemyDeathHandler);
   }
 
 }

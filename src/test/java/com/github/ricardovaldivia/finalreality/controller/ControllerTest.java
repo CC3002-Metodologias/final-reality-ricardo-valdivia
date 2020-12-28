@@ -7,7 +7,9 @@ import com.github.ricardovaldivia.finalreality.model.character.player.classes.*;
 import com.github.ricardovaldivia.finalreality.model.weapon.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
@@ -51,6 +53,7 @@ class ControllerTest {
   private static Sword testSword;
   private static Knife testKnife;
   private static Staff testStaff;
+  private static BlockingQueue<ICharacter> turns;
 
   /**
    * Set the basic status with random values.
@@ -73,7 +76,7 @@ class ControllerTest {
   @BeforeEach
   void basicSetUp(){
     controller = new Controller();
-    BlockingQueue<ICharacter> turns = controller.getTurns();
+    turns = controller.getTurns();
     var seed =  new Random().nextInt();
     setStatus(seed);
     testEnemy = new Enemy(ENEMY_NAME, enemyWeight, turns, maxHealth, defense, attack);
@@ -229,5 +232,16 @@ class ControllerTest {
     assertEquals(testEnemy, controller.getFirstFromQueue());
     controller.removeFromQueue(controller.getEnemies().get(0));
     assertTrue(controller.isTurnsEmpty());
+  }
+
+  @Test
+  void listenerTest(){
+    createItems();
+    var voldemort = new Enemy("Voldemort", 10, turns, 10000, 0, 10000);
+    var party = new ArrayList<>(controller.getPlayerParty());
+    for(var character: party){
+      controller.attack(voldemort, character);
+    }
+    controller.attack(voldemort, controller.getEnemies().get(0));
   }
 }

@@ -1,5 +1,8 @@
 package com.github.ricardovaldivia.finalreality.controller;
 
+import com.github.ricardovaldivia.finalreality.controller.handlers.EnemiesDeathHandler;
+import com.github.ricardovaldivia.finalreality.controller.handlers.IHandler;
+import com.github.ricardovaldivia.finalreality.controller.handlers.PlayerDeathHandler;
 import com.github.ricardovaldivia.finalreality.model.character.Enemy;
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
 import com.github.ricardovaldivia.finalreality.model.character.player.IPlayerCharacter;
@@ -27,6 +30,9 @@ public class Controller {
       new ArrayList<>();
   private final BlockingQueue<ICharacter> turns =
       new LinkedBlockingQueue<>();
+  private final IHandler enemiesDead = new EnemiesDeathHandler(this);
+  private final IHandler playerDead = new PlayerDeathHandler(this);
+
 
 
   /**
@@ -35,7 +41,9 @@ public class Controller {
   public void createBlackMageCharacter(@NotNull String name,
                                        int maxHealth, int defensePoints,
                                        int maxMana) {
-    playerParty.add(new BlackMage(name, turns, maxHealth, defensePoints, maxMana));
+    var character = new BlackMage(name, turns, maxHealth, defensePoints, maxMana);
+    character.addPlayerListener(playerDead);
+    playerParty.add(character);
   }
 
   /**
@@ -44,7 +52,9 @@ public class Controller {
   public void createWhiteMageCharacter(@NotNull String name,
                                        int maxHealth, int defensePoints,
                                        int maxMana) {
-    playerParty.add(new WhiteMage(name, turns, maxHealth, defensePoints, maxMana));
+    var character = new WhiteMage(name, turns, maxHealth, defensePoints, maxMana);
+    character.addPlayerListener(playerDead);
+    playerParty.add(character);
   }
 
   /**
@@ -52,7 +62,9 @@ public class Controller {
    */
   public void createEngineerCharacter(@NotNull String name,
                                       int maxHealth, int defensePoints) {
-    playerParty.add(new Engineer(name, turns, maxHealth, defensePoints));
+    var character = new Engineer(name, turns, maxHealth, defensePoints);
+    character.addPlayerListener(playerDead);
+    playerParty.add(character);
   }
 
   /**
@@ -60,7 +72,9 @@ public class Controller {
    */
   public void createKnightCharacter(@NotNull String name,
                                     int maxHealth, int defensePoints) {
-    playerParty.add(new Knight(name, turns, maxHealth, defensePoints));
+    var character = new Knight(name, turns, maxHealth, defensePoints);
+    character.addPlayerListener(playerDead);
+    playerParty.add(character);
   }
 
   /**
@@ -68,7 +82,9 @@ public class Controller {
    */
   public void createThiefCharacter(@NotNull String name,
                                    int maxHealth, int defensePoints) {
-    playerParty.add(new Thief(name, turns, maxHealth, defensePoints));
+    var character = new Thief(name, turns, maxHealth, defensePoints);
+    character.addPlayerListener(playerDead);
+    playerParty.add(character);
   }
 
   /**
@@ -76,7 +92,9 @@ public class Controller {
    */
   public void createEnemyCharacter(@NotNull String name, int weight, int maxHealth, int defense,
                                    int attack) {
-    enemies.add(new Enemy(name, weight, turns, maxHealth, defense, attack));
+    var enemy = new Enemy(name, weight, turns, maxHealth, defense, attack);
+    enemy.addEnemyListener(enemiesDead);
+    enemies.add(enemy);
   }
 
   /**
@@ -133,7 +151,6 @@ public class Controller {
     return playerParty;
   }
 
-
   /**
    *
    * Returns the current status information of a character.
@@ -186,6 +203,28 @@ public class Controller {
   public void removeFromQueue(ICharacter character) {
     turns.remove(character);
   }
+
+  /**
+   * Removes the player character from the party
+   */
+  public void removeFromParty(IPlayerCharacter playerCharacter) {
+    playerParty.remove(playerCharacter);
+    if (playerParty.isEmpty()){
+      System.out.println("enemigo gano");
+    }
+
+  }
+
+  /**
+   * Removes the enemy character from the enemies
+   */
+  public void removeFromEnemies(Enemy enemy) {
+    enemies.remove(enemy);
+    if (enemies.isEmpty()){
+      System.out.println("player gano");
+    }
+  }
+
 
   /**
    * Puts a character to wait for his turn.

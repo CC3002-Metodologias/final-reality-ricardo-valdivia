@@ -1,5 +1,6 @@
 package com.github.ricardovaldivia.finalreality.model.character.player;
 
+import com.github.ricardovaldivia.finalreality.controller.handlers.IHandler;
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
 import com.github.ricardovaldivia.finalreality.model.weapon.IWeapon;
 
@@ -20,4 +21,5 @@ public interface IPlayerCharacter extends ICharacter {
 
   IWeapon getEquippedWeapon();
 
+  void addPlayerListener(final IHandler playerDeathHandler) ;
 }
