@@ -1,4 +1,4 @@
-package com.github.ricardovaldivia.finalreality.model.controller;
+package com.github.ricardovaldivia.finalreality.controller;
 
 import com.github.ricardovaldivia.finalreality.model.character.Enemy;
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;

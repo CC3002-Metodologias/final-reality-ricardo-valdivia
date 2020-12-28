@@ -1,4 +1,4 @@
-package com.github.ricardovaldivia.finalreality.model.controller;
+package com.github.ricardovaldivia.finalreality.controller;
 
 import com.github.ricardovaldivia.finalreality.model.character.Enemy;
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
@@ -157,8 +157,6 @@ class ControllerTest {
     controller.createSwordWeapon(SWORD_NAME, physicalDamage, weaponWeight);
     controller.equip(testInventory.get(0),testParty.get(4));
   }
-
-
   /**
    * Check if the controller's function get info works properly
    */

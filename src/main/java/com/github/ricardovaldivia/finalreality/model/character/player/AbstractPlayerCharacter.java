@@ -12,12 +12,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-/**
- * A class that holds all the information of a single playerCharacter of the game.
- *
- * @author Ignacio Slater Muñoz.
- * @author Ricardo Valdivia Orellana.
- */
+
 public abstract class AbstractPlayerCharacter extends AbstractCharacter implements
     IPlayerCharacter {
 
