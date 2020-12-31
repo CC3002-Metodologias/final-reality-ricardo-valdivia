@@ -7,6 +7,7 @@ import java.beans.PropertyChangeEvent;
 
 
 /**
+ * A class that holds all the information of the player ha
  * @author Ricardo Valdivia Orellana.
  */
 public class PlayerDeathHandler implements IHandler{

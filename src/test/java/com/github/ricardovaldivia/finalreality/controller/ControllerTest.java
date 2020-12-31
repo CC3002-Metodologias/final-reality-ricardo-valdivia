@@ -1,7 +1,9 @@
 package com.github.ricardovaldivia.finalreality.controller;
 
 
+import com.github.ricardovaldivia.finalreality.controller.states.EndGameState;
 import com.github.ricardovaldivia.finalreality.controller.states.EndTurnState;
+import com.github.ricardovaldivia.finalreality.controller.states.WaitTurnState;
 import com.github.ricardovaldivia.finalreality.model.character.Enemy;
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
 import com.github.ricardovaldivia.finalreality.model.character.player.IPlayerCharacter;
@@ -141,7 +143,7 @@ class ControllerTest {
   @RepeatedTest(5)
   void checkEquipAttackTest(){
     createItems();
-    controller.setState(new EndTurnState(controller));
+    controller.putOnQueue();
     var testEnemiesList = new ArrayList<>(controller.getEnemies());
     var testParty = new ArrayList<>(controller.getPlayerParty());
     var testInventory = controller.getInventory();
@@ -149,11 +151,7 @@ class ControllerTest {
       for(IPlayerCharacter playerCharacter : testParty){
         controller.setState(new EndTurnState(controller));
         controller.attack(enemyTest, playerCharacter);
-        try {
-          Thread.sleep(1500);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+
       }
     }
     for(IPlayerCharacter playerCharacter : testParty){
@@ -165,8 +163,8 @@ class ControllerTest {
     }
     for (IPlayerCharacter playerCharacter : testParty) {
       for (Enemy enemyTest : testEnemiesList) {
-        controller.attack(playerCharacter, enemyTest);
         controller.setState(new EndTurnState(controller));
+        controller.attack(playerCharacter, enemyTest);
       }
     }
     controller.createSwordWeapon(SWORD_NAME, physicalDamage, weaponWeight);
@@ -238,6 +236,7 @@ class ControllerTest {
   @RepeatedTest(5)
   void checkWaitTurnTest() {
     createItems();
+    controller.setState(new WaitTurnState(controller));
     controller.waitTurn(controller.getEnemies().get(0));
     try {
       Thread.sleep(1200);
@@ -253,15 +252,10 @@ class ControllerTest {
   @RepeatedTest(5)
   void checkRemoveFromTurnsTest() {
     createItems();
-    controller.waitTurn(controller.getEnemies().get(0));
-    try {
-      Thread.sleep(1200);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-    assertEquals(testEnemy, controller.getFirstFromQueue());
+    controller.putOnQueue();
+    assertTrue(controller.getTurns().contains(controller.getEnemies().get(0)));
     controller.removeFromQueue(controller.getEnemies().get(0));
-    assertTrue(controller.isTurnsEmpty());
+    assertFalse(controller.getTurns().contains(controller.getEnemies().get(0)));
   }
 
   /**
@@ -270,6 +264,7 @@ class ControllerTest {
   @Test
   void listenerTest(){
     createItems();
+    controller.putOnQueue();
     controller.createEnemyCharacter("Enemy2", 10, 100,10,200);
     var voldemort = new Enemy("Voldemort", 10, turns, 10000, 0, 10000);
     var party = new ArrayList<>(controller.getPlayerParty());
@@ -279,7 +274,9 @@ class ControllerTest {
       controller.setState(new EndTurnState(controller));
     }
     assertTrue(controller.getPlayerParty().isEmpty());
+    controller.setState(new EndTurnState(controller));
     controller.attack(voldemort, controller.getEnemies().get(0));
+    controller.setState(new EndTurnState(controller));
     controller.attack(voldemort,controller.getEnemies().get(0));
     assertTrue(controller.getEnemies().isEmpty());
   }
@@ -374,7 +371,7 @@ class ControllerTest {
         }
       }
       try {
-        Thread.sleep(1000);
+        Thread.sleep(300);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
@@ -385,11 +382,22 @@ class ControllerTest {
     }else if (controller.getWinner().equals("PLAYER")){
       assertTrue(controller.getEnemies().isEmpty());
     }
-    // Catch Exceptions check
-    controller.trySelectAttackTarget();
-    controller.tryEndTurn();
-
   }
 
+  /**
+   * Test that controller catch the exceptions on all his catch statements.
+   */
+  @Test
+  void testControllerExceptionCatch(){
+    controller.setState(new EndGameState(controller));
+    // Catch Exceptions check
+    controller.tryOnTurn();
+    controller.trySelectAttackTarget();
+    controller.tryEndTurn();
+    controller.tryWaitTurn();
+    controller.tryEndGame("PLAYER");
+    controller.tryEndGame("ENEMY");
+
+  }
 
 }

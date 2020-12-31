@@ -54,7 +54,7 @@ public class State {
   /**
    * Set the state as select attack target. If not possible throws an exception.
    */
-  public void selectAttackTarget()throws InvalidTransitionException{
+  public void selectAttackTarget() throws InvalidTransitionException{
     throw new InvalidTransitionException("Can't change to SelectAttackTargetState");
   }
 
