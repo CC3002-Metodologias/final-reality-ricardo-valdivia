@@ -58,5 +58,14 @@ class StaffTest extends AbstractWeaponTest{
         new Staff(STAFF_NAME, physicalDamage, weight, r.nextInt(50) + 51));
   }
 
+  /**
+   * Checks the getCurrentInfo method.
+   */
+  @RepeatedTest(60)
+  void getInfoTest(){
+    checkGetInfo(STAFF_NAME, physicalDamage, weight,testStaffWeapon);
+    assertEquals(String.valueOf(magicDamage),testStaffWeapon.getCurrentInfo().get("MagicDamage"));
+  }
+
 
 }

@@ -4,6 +4,7 @@ import com.github.ricardovaldivia.finalreality.model.character.player.classes.Bl
 import com.github.ricardovaldivia.finalreality.model.character.player.classes.WhiteMage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
@@ -37,6 +38,14 @@ class AxeTest extends AbstractWeaponTest{
         new Axe("Axe3", physicalDamage, weight),
         new Axe(AXE_NAME, r.nextInt(50) + 51, weight),
         new Axe(AXE_NAME, physicalDamage, r.nextInt(30) + 31));
+  }
+
+  /**
+   * Checks the getCurrentInfo method.
+   */
+  @RepeatedTest(60)
+  void getInfoTest(){
+    checkGetInfo(AXE_NAME, physicalDamage, weight,testAxeWeapon);
   }
 
 }

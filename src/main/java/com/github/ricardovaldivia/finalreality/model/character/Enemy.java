@@ -80,9 +80,7 @@ public class Enemy extends AbstractCharacter {
   }
 
 
-  /**
-   * Returns the current status of the enemy.
-   */
+  @Override
   public HashMap<String, String> getCurrentInfo() {
    var info =  super.getCurrentInfo();
    info.put("Attack", String.valueOf(this.getAttack()));
@@ -98,6 +96,9 @@ public class Enemy extends AbstractCharacter {
     }
   }
 
+  /**
+   * adds a enemyListener to this enemy, to handle his death.
+   */
   public void addEnemyListener(final IHandler enemyDeathHandler) {
     enemyDieNotification.addPropertyChangeListener(enemyDeathHandler);
   }

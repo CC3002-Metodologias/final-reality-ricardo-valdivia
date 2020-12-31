@@ -39,4 +39,12 @@ class BowTest extends AbstractWeaponTest{
         new Bow(BOW_NAME, physicalDamage, r.nextInt(30) + 31));
   }
 
+  /**
+   * Checks the getCurrentInfo method.
+   */
+  @RepeatedTest(60)
+  void getInfoTest(){
+    checkGetInfo(BOW_NAME, physicalDamage, weight,testBowWeapon);
+  }
+
 }

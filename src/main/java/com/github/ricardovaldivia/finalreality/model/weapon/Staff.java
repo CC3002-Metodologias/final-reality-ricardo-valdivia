@@ -4,6 +4,7 @@ import com.github.ricardovaldivia.finalreality.model.character.player.classes.Bl
 import com.github.ricardovaldivia.finalreality.model.character.player.classes.Thief;
 import com.github.ricardovaldivia.finalreality.model.character.player.classes.WhiteMage;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -61,5 +62,12 @@ public class Staff extends AbstractWeapon{
     @Override
     public IWeapon equippedByThief(Thief thief) {
         return this;
+    }
+
+    @Override
+    public HashMap<String, String> getCurrentInfo() {
+        var info = super.getCurrentInfo();
+        info.put("MagicDamage", String.valueOf(this.getMagicDamage()));
+        return info;
     }
 }

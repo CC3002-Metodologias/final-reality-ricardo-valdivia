@@ -38,4 +38,12 @@ class SwordTest extends AbstractWeaponTest{
         new Sword(SWORD_NAME, physicalDamage, r.nextInt(30) + 31));
   }
 
+  /**
+   * Checks the getCurrentInfo method.
+   */
+  @RepeatedTest(60)
+  void getInfoTest(){
+    checkGetInfo(SWORD_NAME, physicalDamage, weight,testSwordWeapon);
+  }
+
 }

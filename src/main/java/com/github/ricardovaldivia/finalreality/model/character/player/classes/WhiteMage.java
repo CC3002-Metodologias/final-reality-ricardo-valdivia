@@ -25,7 +25,6 @@ public class WhiteMage extends AbstractMageCharacter {
    * @param maxMana  Max amount of mana of the WhiteMage
    */
 
-
   public WhiteMage(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue, int maxHealth, int defense, int maxMana) {
     super(name, turnsQueue, maxHealth, defense, maxMana);
   }
@@ -58,6 +57,7 @@ public class WhiteMage extends AbstractMageCharacter {
   public void attack(ICharacter character) {
     if (this.isAlive()) {
       character.attackByWhiteMage(this);
+
     }
   }
 }

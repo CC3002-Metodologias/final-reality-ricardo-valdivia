@@ -21,5 +21,8 @@ public interface IPlayerCharacter extends ICharacter {
 
   IWeapon getEquippedWeapon();
 
+  /**
+   * adds a player listener to this character, to handle his death.
+   */
   void addPlayerListener(final IHandler playerDeathHandler) ;
 }

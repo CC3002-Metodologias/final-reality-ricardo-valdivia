@@ -1,5 +1,7 @@
 package com.github.ricardovaldivia.finalreality.controller;
 
+
+import com.github.ricardovaldivia.finalreality.controller.states.EndTurnState;
 import com.github.ricardovaldivia.finalreality.model.character.Enemy;
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
 import com.github.ricardovaldivia.finalreality.model.character.player.IPlayerCharacter;
@@ -54,20 +56,21 @@ class ControllerTest {
   private static Knife testKnife;
   private static Staff testStaff;
   private static BlockingQueue<ICharacter> turns;
-
+  private static int seed =  new Random().nextInt();
+  private static final Random r = new Random(seed);
+  
   /**
    * Set the basic status with random values.
    */
-  public void setStatus(int seed){
-    Random r = new Random(seed);
-    maxHealth = r.nextInt(50);
-    maxMana = r.nextInt(50);
-    defense = r.nextInt(30);
-    attack = r.nextInt(30);
-    enemyWeight = r.nextInt(30);
-    physicalDamage = r.nextInt(50);
+  public void setStatus(){
+    maxHealth = r.nextInt(50)+5;
+    maxMana = r.nextInt(50)+1;
+    defense = r.nextInt(30)+1;
+    attack = r.nextInt(30)+20;
+    enemyWeight = 2;
+    physicalDamage = r.nextInt(50)+10;
     magicDamage = r.nextInt(50);
-    weaponWeight = r.nextInt(30);
+    weaponWeight = r.nextInt(30)+5;
   }
 
   /**
@@ -77,9 +80,9 @@ class ControllerTest {
   void basicSetUp(){
     controller = new Controller();
     turns = controller.getTurns();
-    var seed =  new Random().nextInt();
-    setStatus(seed);
-    testEnemy = new Enemy(ENEMY_NAME, enemyWeight, turns, maxHealth, defense, attack);
+    setStatus();
+    seed = new Random().nextInt();
+    testEnemy = new Enemy(ENEMY_NAME, enemyWeight, turns, maxHealth + 500, defense, attack);
     testEngineer = new Engineer(ENGINEER_NAME, turns, maxHealth, defense);
     testThief = new Thief(THIEF_NAME, turns, maxHealth, defense);
     testKnight = new Knight(KNIGHT_NAME, turns, maxHealth, defense);
@@ -97,7 +100,7 @@ class ControllerTest {
    * Creates item's using the controller function.
    */
   public void createItems(){
-    controller.createEnemyCharacter(ENEMY_NAME, enemyWeight, maxHealth, defense, attack);
+    controller.createEnemyCharacter(ENEMY_NAME, enemyWeight, maxHealth + 500, defense, attack);
     controller.createEngineerCharacter(ENGINEER_NAME, maxHealth, defense);
     controller.createThiefCharacter(THIEF_NAME, maxHealth, defense);
     controller.createKnightCharacter(KNIGHT_NAME, maxHealth, defense);
@@ -135,26 +138,35 @@ class ControllerTest {
   /**
    * Check if the controller's function attack works properly
    */
-  @RepeatedTest(1000)
+  @RepeatedTest(5)
   void checkEquipAttackTest(){
     createItems();
-    var testEnemiesList = controller.getEnemies();
-    var testParty = controller.getPlayerParty();
+    controller.setState(new EndTurnState(controller));
+    var testEnemiesList = new ArrayList<>(controller.getEnemies());
+    var testParty = new ArrayList<>(controller.getPlayerParty());
     var testInventory = controller.getInventory();
     for (Enemy enemyTest : testEnemiesList){
       for(IPlayerCharacter playerCharacter : testParty){
+        controller.setState(new EndTurnState(controller));
         controller.attack(enemyTest, playerCharacter);
+        try {
+          Thread.sleep(1500);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
       }
     }
     for(IPlayerCharacter playerCharacter : testParty){
       int index = 0;
       while(!playerCharacter.isEquipped()){
         controller.equip(testInventory.get(index), playerCharacter);
+        index++;
       }
     }
     for (IPlayerCharacter playerCharacter : testParty) {
       for (Enemy enemyTest : testEnemiesList) {
         controller.attack(playerCharacter, enemyTest);
+        controller.setState(new EndTurnState(controller));
       }
     }
     controller.createSwordWeapon(SWORD_NAME, physicalDamage, weaponWeight);
@@ -169,14 +181,16 @@ class ControllerTest {
     var enemyInfo = controller.getCurrentInfo(testEnemy);
     var blackMageInfo = controller.getCurrentInfo(testBlackMage);
     var knightInfo = controller.getCurrentInfo(testKnight);
+    var staffInfo = controller.getCurrentInfo(testStaff);
     String maxHealthString = String.valueOf(maxHealth);
+    String enemyMaxHealthString = String.valueOf(maxHealth + 500);
     String maxManaString = String.valueOf(maxMana);
     String defenseString = String.valueOf(defense);
     String attackString = String.valueOf(attack);
     String weightString = String.valueOf(enemyWeight);
     assertEquals(ENEMY_NAME, enemyInfo.get("Name"));
-    assertEquals(maxHealthString, enemyInfo.get("maxHealth"));
-    assertEquals(maxHealthString, enemyInfo.get("currentHealth"));
+    assertEquals(enemyMaxHealthString, enemyInfo.get("maxHealth"));
+    assertEquals(enemyMaxHealthString, enemyInfo.get("currentHealth"));
     assertEquals(defenseString, enemyInfo.get("defense"));
     assertEquals("true", enemyInfo.get("status"));
     assertEquals(attackString, enemyInfo.get("Attack"));
@@ -195,53 +209,187 @@ class ControllerTest {
     assertEquals("false", blackMageInfo.get("EquippedWeapon"));
     assertEquals(maxManaString, blackMageInfo.get("maxMana"));
     assertEquals(maxManaString, blackMageInfo.get("currentMana"));
+    assertEquals(STAFF_NAME,staffInfo.get("Name"));
+    assertEquals(String.valueOf(physicalDamage), staffInfo.get("PhysicalDamage"));
+    assertEquals(String.valueOf(weaponWeight),staffInfo.get("Weight"));
+    assertEquals(String.valueOf(magicDamage),staffInfo.get("MagicDamage"));
+
   }
 
   /**
    * Check if the Turns empty work properly
    */
-  @RepeatedTest(30)
+  @RepeatedTest(5)
   void checkTurnsEmptyTest() {
     createItems();
     assertTrue(controller.isTurnsEmpty());
-    controller.equip(controller.getInventory().get(0), controller.getPlayerParty().get(0));
-    controller.waitTurn(controller.getPlayerParty().get(0));
-    controller.waitTurns();
+    controller.waitTurn(controller.getEnemies().get(0));
+    try {
+      Thread.sleep(1200);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     assertFalse(controller.isTurnsEmpty());
   }
 
   /**
    * Check if the wait turn work properly
    */
-  @RepeatedTest(30)
+  @RepeatedTest(5)
   void checkWaitTurnTest() {
     createItems();
     controller.waitTurn(controller.getEnemies().get(0));
-    controller.waitTurns();
+    try {
+      Thread.sleep(1200);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     assertEquals(testEnemy,controller.getFirstFromQueue());
   }
 
   /**
    * Check if the remove from turns work properly
    */
-  @RepeatedTest(30)
+  @RepeatedTest(5)
   void checkRemoveFromTurnsTest() {
     createItems();
     controller.waitTurn(controller.getEnemies().get(0));
-    controller.waitTurns();
+    try {
+      Thread.sleep(1200);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     assertEquals(testEnemy, controller.getFirstFromQueue());
     controller.removeFromQueue(controller.getEnemies().get(0));
     assertTrue(controller.isTurnsEmpty());
   }
 
+  /**
+   * Check if the enemiesDeathHandler and the playerDeathHandler works properly.
+   */
   @Test
   void listenerTest(){
     createItems();
+    controller.createEnemyCharacter("Enemy2", 10, 100,10,200);
     var voldemort = new Enemy("Voldemort", 10, turns, 10000, 0, 10000);
     var party = new ArrayList<>(controller.getPlayerParty());
+    controller.setState(new EndTurnState(controller));
     for(var character: party){
       controller.attack(voldemort, character);
+      controller.setState(new EndTurnState(controller));
     }
+    assertTrue(controller.getPlayerParty().isEmpty());
     controller.attack(voldemort, controller.getEnemies().get(0));
+    controller.attack(voldemort,controller.getEnemies().get(0));
+    assertTrue(controller.getEnemies().isEmpty());
   }
+
+
+  /**
+   * Creates three random characters for the player.
+   */
+  void createThreePlayerCharacter(){
+    for (int i = 0; i < 3; i++) {
+      var characterNumber = r.nextInt(5);
+      if(characterNumber == 0){
+        controller.createBlackMageCharacter(BLACK_MAGE_NAME + i, 30, 15, maxMana);
+      }
+      else if(characterNumber == 1){
+        controller.createWhiteMageCharacter(WHITE_MAGE_NAME + i, 30, 15, maxMana);
+      }
+      else if (characterNumber == 2){
+        controller.createEngineerCharacter(ENGINEER_NAME + i, 30, 15);
+      } else if (characterNumber == 3){
+        controller.createKnightCharacter(KNIGHT_NAME + i, 30, 15);
+      }
+      else {
+        controller.createThiefCharacter(THIEF_NAME + i, 30, 15);
+      }
+    }
+  }
+
+  /**
+   * Creates three random characters for the enemy.
+   */
+  void createThreeEnemyCharacter(){
+    controller.createEnemyCharacter("ENEMY1", 50,
+          100 , defense , 25);
+    controller.createEnemyCharacter("ENEMY2", 100,
+        80, defense , 25);
+    controller.createEnemyCharacter("ENEMY3", 60,
+      100, defense , 25);
+  }
+
+  /**
+   * Pick a random enemy from the enemies list.
+   */
+  Enemy pickRandomEnemy(){
+    return controller.getEnemies().get(controller.randomValue(0, controller.getEnemies().size()));
+  }
+
+  /**
+   * Equip a random weapon.
+   */
+  void randomEquip(){
+    while(!controller.isEquipped((IPlayerCharacter) controller.getAttacker())){
+      var randIndex = r.nextInt(5);
+      controller.equip(controller.getInventory().get(randIndex), (IPlayerCharacter) controller.getAttacker());
+    }
+  }
+
+  /**
+   * This test emulate full game using random values to simulate the user entry.
+   */
+  @Test
+  void gameTest(){
+    controller.tryStartGame(3);
+    createThreePlayerCharacter();
+    controller.tryStartGame(3);
+    createThreeEnemyCharacter();
+    controller.tryStartGame(3);
+    assertTrue(controller.isStartGame());
+    controller.tryOnTurn();
+    assertFalse(controller.isStartGame());
+    assertTrue(controller.isOnTurn());
+    while(!controller.isEndGame() && (controller.isOnTurn() | controller.isWaitTurn())) {
+      if (controller.isOnTurn()) {
+        if (controller.isEnemy(controller.getAttacker())) {
+          assertFalse(controller.isSelectAttackTarget());
+          controller.trySelectAttackTarget();
+          assertTrue(controller.isSelectAttackTarget());
+          assertFalse(controller.isEndTurn());
+          controller.tryEndTurn();
+          assertTrue(controller.isEndTurn());
+          controller.attack(controller.getAttacker(), controller.getAttacked());
+        } else if (controller.isPlayerCharacter(controller.getAttacker())) {
+          assertFalse(controller.isSelectAttackTarget());
+          randomEquip();
+          controller.trySelectAttackTarget();
+          assertTrue(controller.isSelectAttackTarget());
+          assertFalse(controller.isEndTurn());
+          controller.setAttacked(pickRandomEnemy());
+          controller.tryEndTurn();
+          assertTrue(controller.isEndTurn());
+          controller.attack(controller.getAttacker(), controller.getAttacked());
+        }
+      }
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+    assertTrue(controller.isEndGame());
+    if (controller.getWinner().equals("ENEMY")){
+      assertTrue(controller.getPlayerParty().isEmpty());
+    }else if (controller.getWinner().equals("PLAYER")){
+      assertTrue(controller.getEnemies().isEmpty());
+    }
+    // Catch Exceptions check
+    controller.trySelectAttackTarget();
+    controller.tryEndTurn();
+
+  }
+
+
 }

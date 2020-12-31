@@ -1,5 +1,6 @@
 package com.github.ricardovaldivia.finalreality.model.character;
 
+import com.github.ricardovaldivia.finalreality.controller.handlers.IHandler;
 import com.github.ricardovaldivia.finalreality.model.character.player.classes.*;
 
 import java.util.ArrayList;
@@ -100,5 +101,15 @@ public interface ICharacter {
    * Returns the current status of the character.
    */
   HashMap<String, String> getCurrentInfo();
+
+  /**
+   * Adds a turnsListener to this character, to handle the end of the turn.
+   */
+  void addTurnsListener(IHandler endTurnHandler);
+
+  /**
+   * Adds a notEmptyListener to this character, to handle an empty queue.
+   */
+  void addNotEmptyListener(IHandler turnsEmptyHandler);
 }
 

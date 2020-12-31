@@ -38,4 +38,12 @@ class KnifeTest extends AbstractWeaponTest{
         new Knife(KNIFE_NAME, physicalDamage, r.nextInt(30) + 31));
   }
 
+  /**
+   * Checks the getCurrentInfo method.
+   */
+  @RepeatedTest(60)
+  void getInfoTest(){
+    checkGetInfo(KNIFE_NAME, physicalDamage, weight, testKnifeWeapon);
+  }
+
 }

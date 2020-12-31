@@ -77,9 +77,7 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
     }
   }
 
-  /**
-   * Returns the current status of a player character.
-   */
+  @Override
   public HashMap<String, String> getCurrentInfo() {
    var info = super.getCurrentInfo();
    info.put("EquippedWeapon", String.valueOf(this.isEquipped()));

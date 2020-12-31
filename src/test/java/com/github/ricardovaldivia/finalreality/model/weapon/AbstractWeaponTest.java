@@ -43,4 +43,19 @@ class AbstractWeaponTest {
   void basicSetUp(int seed){
     r = new Random(seed);
   }
+
+
+  /**
+   *
+   * Check if the method to get the current information work properly
+   */
+  public void checkGetInfo(final String expectedName,
+                           final int expectedPhysicalDamage,
+                           final int expectedWeight,
+                           final IWeapon weapon){
+    var info = weapon.getCurrentInfo();
+    assertEquals(expectedName,info.get("Name"));
+    assertEquals(String.valueOf(expectedPhysicalDamage), info.get("PhysicalDamage"));
+    assertEquals(String.valueOf(expectedWeight),info.get("Weight"));
+  }
 }
