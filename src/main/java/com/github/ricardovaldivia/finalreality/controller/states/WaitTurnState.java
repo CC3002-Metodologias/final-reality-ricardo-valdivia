@@ -16,8 +16,9 @@ public class WaitTurnState extends State{
     return true;
   }
 
+
   @Override
-  public void onTurn() {
-    controller.setState(new OnTurnState(controller));
+  public void endingWait() {
+    controller.setState(new EndingWaitTurnState(controller));
   }
 }

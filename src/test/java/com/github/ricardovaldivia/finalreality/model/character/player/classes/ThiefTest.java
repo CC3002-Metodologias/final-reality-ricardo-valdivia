@@ -71,5 +71,7 @@ class ThiefTest extends AbstractPlayerCharacterTest {
     testThiefCharacter.setCurrentHealth(0);
     testThiefCharacter.setAlive(false);
     testThiefCharacter.attack(playerCharacterTest);
+    testThiefCharacter.unEquip();
+    assertNull(testThiefCharacter.getEquippedWeapon());
   }
 }

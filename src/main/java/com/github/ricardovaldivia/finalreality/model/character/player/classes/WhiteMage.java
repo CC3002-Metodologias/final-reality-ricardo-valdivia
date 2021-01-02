@@ -60,4 +60,16 @@ public class WhiteMage extends AbstractMageCharacter {
 
     }
   }
+
+  @Override
+  public HashMap<String, String> getCurrentInfo() {
+    var info = super.getCurrentInfo();
+    info.put("Character Class","White Mage");
+    return info;
+  }
+
+  @Override
+  public String toString(){
+    return super.toString() + ", "+ "White Mage";
+  }
 }

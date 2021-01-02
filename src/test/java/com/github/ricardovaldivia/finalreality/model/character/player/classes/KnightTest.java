@@ -72,5 +72,7 @@ class KnightTest extends AbstractPlayerCharacterTest {
     testKnightCharacter.setCurrentHealth(0);
     testKnightCharacter.setAlive(false);
     testKnightCharacter.attack(playerCharacterTest);
+    testKnightCharacter.unEquip();
+    assertNull(testKnightCharacter.getEquippedWeapon());
   }
 }

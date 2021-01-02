@@ -27,6 +27,7 @@ public class StateTest {
     assertThrows(InvalidTransitionException.class, state::endGame);
     assertThrows(InvalidTransitionException.class, state::onTurn);
     assertThrows(InvalidTransitionException.class, state::waitTurn);
+    assertThrows(InvalidTransitionException.class, state::endingWait);
     }
 
 }

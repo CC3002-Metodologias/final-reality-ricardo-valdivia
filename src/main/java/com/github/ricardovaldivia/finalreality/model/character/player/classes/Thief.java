@@ -5,6 +5,7 @@ import com.github.ricardovaldivia.finalreality.model.character.player.AbstractPl
 import com.github.ricardovaldivia.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
@@ -54,5 +55,18 @@ public class Thief extends AbstractPlayerCharacter {
     if (this.isAlive()) {
       character.attackByThief(this);
     }
+  }
+
+  @Override
+  public HashMap<String, String> getCurrentInfo() {
+    var info = super.getCurrentInfo();
+    info.put("Character Class","Thief");
+    return info;
+  }
+
+
+  @Override
+  public String toString(){
+    return super.toString() + ", "+ "Thief";
   }
 }

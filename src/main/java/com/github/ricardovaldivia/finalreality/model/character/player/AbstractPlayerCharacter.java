@@ -83,4 +83,10 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter implemen
    info.put("EquippedWeapon", String.valueOf(this.isEquipped()));
    return info;
   }
+
+  @Override
+  public void unEquip() {
+    this.equippedWeapon = null;
+  }
+
 }

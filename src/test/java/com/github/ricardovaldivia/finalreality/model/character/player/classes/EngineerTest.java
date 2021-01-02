@@ -72,5 +72,7 @@ class EngineerTest extends AbstractPlayerCharacterTest {
     testEngineerCharacter.setCurrentHealth(0);
     testEngineerCharacter.setAlive(false);
     testEngineerCharacter.attack(playerCharacterTest);
+    testEngineerCharacter.unEquip();
+    assertNull(testEngineerCharacter.getEquippedWeapon());
   }
 }

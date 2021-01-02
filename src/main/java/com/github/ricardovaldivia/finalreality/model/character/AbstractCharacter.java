@@ -104,7 +104,7 @@ public abstract class AbstractCharacter implements ICharacter {
     int finalDamage = damage - this.getDefense();
     if (this.isAlive()) {
       if(damage<= this.getDefense()){
-        this.setCurrentHealth(1);
+        this.setCurrentHealth(this.getCurrentHealth() - 1);
       }
       else if (this.getCurrentHealth() - finalDamage <= 0) {
         this.setAlive(false);
@@ -195,5 +195,10 @@ public abstract class AbstractCharacter implements ICharacter {
   @Override
   public void addNotEmptyListener(final IHandler turnsEmptyHandler){
     notEmptyNotification.addPropertyChangeListener(turnsEmptyHandler);
+  }
+
+  @Override
+  public String toString(){
+    return getName();
   }
 }

@@ -91,6 +91,8 @@ class WhiteMageTest extends AbstractPlayerCharacterTest {
     testWhiteCharacter.setCurrentHealth(0);
     testWhiteCharacter.setAlive(false);
     testWhiteCharacter.attack(playerCharacterTest);
+    testWhiteCharacter.unEquip();
+    assertNull(testWhiteCharacter.getEquippedWeapon());
   }
 
   /**

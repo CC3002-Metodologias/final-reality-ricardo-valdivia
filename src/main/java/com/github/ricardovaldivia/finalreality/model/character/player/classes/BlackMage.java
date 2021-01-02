@@ -60,4 +60,17 @@ public class BlackMage extends AbstractMageCharacter {
         getMaxHealth() == that.getMaxHealth() &&
         getMaxMana() == that.getMaxMana();
   }
+
+  @Override
+  public HashMap<String, String> getCurrentInfo() {
+    var info = super.getCurrentInfo();
+    info.put("Character Class","Black Mage");
+    return info;
+  }
+
+
+  @Override
+  public String toString(){
+    return super.toString() + ", "+ "Black Mage";
+  }
 }

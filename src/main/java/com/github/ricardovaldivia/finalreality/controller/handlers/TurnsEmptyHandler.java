@@ -1,8 +1,6 @@
 package com.github.ricardovaldivia.finalreality.controller.handlers;
 
 import com.github.ricardovaldivia.finalreality.controller.Controller;
-import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
-import com.github.ricardovaldivia.finalreality.model.character.player.IPlayerCharacter;
 
 import java.beans.PropertyChangeEvent;
 
@@ -24,7 +22,8 @@ public class TurnsEmptyHandler implements IHandler {
    */
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
-    controller.setAttacker((ICharacter) evt.getNewValue());
-    controller.tryOnTurn();
+    if (!controller.isEndGame() && !controller.isEndingWaitTurn()){
+      controller.tryEndWaitTurn();
+    }
   }
 }

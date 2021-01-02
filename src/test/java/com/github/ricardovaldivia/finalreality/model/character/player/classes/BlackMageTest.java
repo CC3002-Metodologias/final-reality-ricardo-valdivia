@@ -91,6 +91,8 @@ class BlackMageTest extends AbstractPlayerCharacterTest {
     testBlackCharacter.setCurrentHealth(0);
     testBlackCharacter.setAlive(false);
     testBlackCharacter.attack(playerCharacterTest);
+    testBlackCharacter.unEquip();
+    assertNull(testBlackCharacter.getEquippedWeapon());
   }
 
   /**

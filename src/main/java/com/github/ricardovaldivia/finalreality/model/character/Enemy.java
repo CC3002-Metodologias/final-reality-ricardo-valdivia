@@ -85,6 +85,7 @@ public class Enemy extends AbstractCharacter {
    var info =  super.getCurrentInfo();
    info.put("Attack", String.valueOf(this.getAttack()));
    info.put("Weight", String.valueOf(this.getWeight()));
+   info.put("Character Class", "Enemy");
    return info;
   }
 
@@ -103,6 +104,10 @@ public class Enemy extends AbstractCharacter {
     enemyDieNotification.addPropertyChangeListener(enemyDeathHandler);
   }
 
+  @Override
+  public String toString() {
+    return super.toString() +", Weight: "+ getWeight()+", Attack: "+ getAttack();
+  }
 }
 
 

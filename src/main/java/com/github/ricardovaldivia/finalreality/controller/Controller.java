@@ -43,14 +43,15 @@ public class Controller {
   private final Random seed =  new Random();
   private final Random r = new Random(seed.nextLong());
   private String winner;
-
+  private int size;
 
   public Controller(){
-    this.createAxeWeapon("AXE", randomValue(40,60),120);
-    this.createKnifeWeapon("KNIFE", randomValue(35,55),60);
-    this.createSwordWeapon("SWORD", randomValue(50,56), 90);
-    this.createBowWeapon("BOW", randomValue(30,40), 50);
-    this.createStaffWeapon("STAFF", randomValue(15,26), 40, randomValue(2,51));
+    this.size = 0;
+    this.createAxeWeapon("AXE", randomValue(40,131),randomValue(90,150));
+    this.createKnifeWeapon("KNIFE", randomValue(35,61),randomValue(60,90));
+    this.createSwordWeapon("SWORD", randomValue(50,121), randomValue(90,130));
+    this.createBowWeapon("BOW", randomValue(30,60), randomValue(50,90));
+    this.createStaffWeapon("STAFF", randomValue(30,50), randomValue(50,90), randomValue(2,51));
   }
 
 
@@ -59,6 +60,45 @@ public class Controller {
    */
   public void setState(State s){
     state = s;
+  }
+
+  /**
+   *
+   * Look for a weapon with his name reference
+   */
+  public IWeapon findWeapon(String string){
+    for(var weapon : getInventory()){
+      if(weapon.getCurrentInfo().get("Name").equals(string)){
+        return weapon;
+      }
+    }
+    return null;
+  }
+  /**
+   *
+   * Look for a character with his name and class reference
+   */
+  public Enemy findEnemy(String string){
+    for(var character: getEnemies()){
+      if(character.toString().equals(string)){
+        return character;
+      }
+    }
+    return  null;
+  }
+
+
+  /**
+   *
+   * Look for a character with his name and class reference
+   */
+  public IPlayerCharacter findCharacter(String string){
+    for(var character: getPlayerParty()){
+      if(character.toString().equals(string)){
+        return character;
+      }
+    }
+    return  null;
   }
 
   /**
@@ -276,11 +316,17 @@ public class Controller {
     this.attacker = character;
   }
 
+  public int getSize(){
+    return size;
+  }
+  public void setSize(int size){
+    this.size = size;
+  }
   /**
    * Set the state as StarGame if the party and the enemies got an specific size.
    */
-  public void tryStartGame(int size){
-      if(this.getPlayerParty().size() == size && this.getEnemies().size() == size) {
+  public void tryStartGame(){
+      if(this.getPlayerParty().size() == getSize() && this.getEnemies().size() == getSize()) {
         this.putOnQueue();
         this.setState(new StartGameState(this));
       }
@@ -327,6 +373,19 @@ public class Controller {
   public void tryWaitTurn(){
     try {
       state.waitTurn();
+    } catch (InvalidTransitionException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Try to change to end wait turn state
+   */
+  public void tryEndWaitTurn(){
+    try {
+      if(!this.isOnTurn()) {
+        state.endingWait();
+      }
     } catch (InvalidTransitionException e) {
       e.printStackTrace();
     }
@@ -395,6 +454,13 @@ public class Controller {
   }
 
   /**
+   * returns a boolean value about the Ending Wait Turn state
+   */
+  public boolean isEndingWaitTurn(){
+    return state.isEndWaitState();
+  }
+
+  /**
    * Puts a character to wait his turn, and try to change the state,
    * according to some conditions.
    */
@@ -456,14 +522,14 @@ public class Controller {
    * Returns a truth value regarding whether the queried character is an enemy.
    */
   public boolean isEnemy(ICharacter character){
-    return getEnemies().contains(character);
+    return character.getCurrentInfo().get("Character Class").equals("Enemy");
   }
 
   /**
    * Returns a truth value regarding whether the queried character is a player character
    */
   public  boolean isPlayerCharacter(ICharacter character){
-    return getPlayerParty().contains(character);
+    return !character.getCurrentInfo().get("Character Class").equals("Enemy");
   }
 
   /**
@@ -471,6 +537,11 @@ public class Controller {
    */
   public void waitTurn(ICharacter character) {
     character.waitTurn();
+    if(isPlayerCharacter(character))
+    {
+      var playerCharacter = (IPlayerCharacter) character;
+      playerCharacter.unEquip();
+    }
   }
 
   /**

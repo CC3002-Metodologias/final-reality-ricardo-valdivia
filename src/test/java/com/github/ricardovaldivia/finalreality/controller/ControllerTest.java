@@ -1,8 +1,9 @@
 package com.github.ricardovaldivia.finalreality.controller;
 
 
-import com.github.ricardovaldivia.finalreality.controller.states.EndGameState;
+
 import com.github.ricardovaldivia.finalreality.controller.states.EndTurnState;
+import com.github.ricardovaldivia.finalreality.controller.states.OnTurnState;
 import com.github.ricardovaldivia.finalreality.controller.states.WaitTurnState;
 import com.github.ricardovaldivia.finalreality.model.character.Enemy;
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
@@ -41,11 +42,11 @@ class ControllerTest {
   private static final String THIEF_NAME = "Mundungus";
   private static final String WHITE_MAGE_NAME = "Eiko";
   private static final String ENEMY_NAME = "Goblin";
-  private static final String AXE_NAME = "AXE";
-  private static final String BOW_NAME = "BOW";
-  private static final String SWORD_NAME = "SWORD";
-  private static final String STAFF_NAME = "STAFF";
-  private static final String KNIFE_NAME = "KNIFE";
+  private static final String AXE_NAME = "AXE1";
+  private static final String BOW_NAME = "BOW1";
+  private static final String SWORD_NAME = "SWORD1";
+  private static final String STAFF_NAME = "STAFF1";
+  private static final String KNIFE_NAME = "KNIFE1";
   private static BlackMage testBlackMage;
   private static WhiteMage testWhiteMage;
   private static Engineer testEngineer;
@@ -140,7 +141,7 @@ class ControllerTest {
   /**
    * Check if the controller's function attack works properly
    */
-  @RepeatedTest(5)
+  @RepeatedTest(2)
   void checkEquipAttackTest(){
     createItems();
     controller.putOnQueue();
@@ -178,6 +179,9 @@ class ControllerTest {
     createItems();
     var enemyInfo = controller.getCurrentInfo(testEnemy);
     var blackMageInfo = controller.getCurrentInfo(testBlackMage);
+    var whiteMageInfo = controller.getCurrentInfo(testWhiteMage);
+    var thiefInfo = controller.getCurrentInfo(testThief);
+    var engineerInfo = controller.getCurrentInfo(testEngineer);
     var knightInfo = controller.getCurrentInfo(testKnight);
     var staffInfo = controller.getCurrentInfo(testStaff);
     String maxHealthString = String.valueOf(maxHealth);
@@ -186,6 +190,8 @@ class ControllerTest {
     String defenseString = String.valueOf(defense);
     String attackString = String.valueOf(attack);
     String weightString = String.valueOf(enemyWeight);
+
+    // Enemy
     assertEquals(ENEMY_NAME, enemyInfo.get("Name"));
     assertEquals(enemyMaxHealthString, enemyInfo.get("maxHealth"));
     assertEquals(enemyMaxHealthString, enemyInfo.get("currentHealth"));
@@ -193,12 +199,18 @@ class ControllerTest {
     assertEquals("true", enemyInfo.get("status"));
     assertEquals(attackString, enemyInfo.get("Attack"));
     assertEquals(weightString, enemyInfo.get("Weight"));
+    assertEquals("Enemy", enemyInfo.get("Character Class"));
+
+    // Knight
     assertEquals(KNIGHT_NAME, knightInfo.get("Name"));
     assertEquals(maxHealthString, knightInfo.get("maxHealth"));
     assertEquals(maxHealthString, knightInfo.get("currentHealth"));
     assertEquals(defenseString, knightInfo.get("defense"));
     assertEquals("true", knightInfo.get("status"));
     assertEquals("false", knightInfo.get("EquippedWeapon"));
+    assertEquals("Knight", knightInfo.get("Character Class"));
+
+    // Black Mage
     assertEquals(BLACK_MAGE_NAME, blackMageInfo.get("Name"));
     assertEquals(maxHealthString, blackMageInfo.get("maxHealth"));
     assertEquals(maxHealthString, blackMageInfo.get("currentHealth"));
@@ -207,11 +219,42 @@ class ControllerTest {
     assertEquals("false", blackMageInfo.get("EquippedWeapon"));
     assertEquals(maxManaString, blackMageInfo.get("maxMana"));
     assertEquals(maxManaString, blackMageInfo.get("currentMana"));
+    assertEquals("Black Mage", blackMageInfo.get("Character Class"));
+
+    // White Mage
+    assertEquals(WHITE_MAGE_NAME, whiteMageInfo.get("Name"));
+    assertEquals(maxHealthString, whiteMageInfo.get("maxHealth"));
+    assertEquals(maxHealthString, whiteMageInfo.get("currentHealth"));
+    assertEquals(defenseString, whiteMageInfo.get("defense"));
+    assertEquals("true", whiteMageInfo.get("status"));
+    assertEquals("false", whiteMageInfo.get("EquippedWeapon"));
+    assertEquals(maxManaString, whiteMageInfo.get("maxMana"));
+    assertEquals(maxManaString, whiteMageInfo.get("currentMana"));
+    assertEquals("White Mage", whiteMageInfo.get("Character Class"));
+
+    // Thief
+    assertEquals(THIEF_NAME, thiefInfo.get("Name"));
+    assertEquals(maxHealthString,thiefInfo.get("maxHealth"));
+    assertEquals(maxHealthString, thiefInfo.get("currentHealth"));
+    assertEquals(defenseString, thiefInfo.get("defense"));
+    assertEquals("true", thiefInfo.get("status"));
+    assertEquals("false", thiefInfo.get("EquippedWeapon"));
+    assertEquals("Thief", thiefInfo.get("Character Class"));
+
+    // Engineer
+    assertEquals(ENGINEER_NAME, engineerInfo.get("Name"));
+    assertEquals(maxHealthString,engineerInfo.get("maxHealth"));
+    assertEquals(maxHealthString, engineerInfo.get("currentHealth"));
+    assertEquals(defenseString, engineerInfo.get("defense"));
+    assertEquals("true",engineerInfo.get("status"));
+    assertEquals("false", engineerInfo.get("EquippedWeapon"));
+    assertEquals("Engineer", engineerInfo.get("Character Class"));
+
+    // Staff
     assertEquals(STAFF_NAME,staffInfo.get("Name"));
     assertEquals(String.valueOf(physicalDamage), staffInfo.get("PhysicalDamage"));
     assertEquals(String.valueOf(weaponWeight),staffInfo.get("Weight"));
     assertEquals(String.valueOf(magicDamage),staffInfo.get("MagicDamage"));
-
   }
 
   /**
@@ -233,7 +276,7 @@ class ControllerTest {
   /**
    * Check if the wait turn work properly
    */
-  @RepeatedTest(5)
+  @Test
   void checkWaitTurnTest() {
     createItems();
     controller.setState(new WaitTurnState(controller));
@@ -279,6 +322,9 @@ class ControllerTest {
     controller.setState(new EndTurnState(controller));
     controller.attack(voldemort,controller.getEnemies().get(0));
     assertTrue(controller.getEnemies().isEmpty());
+    controller.setState(new OnTurnState(controller));
+    controller.tryEndWaitTurn();
+    assertTrue(controller.isOnTurn());
   }
 
 
@@ -337,20 +383,24 @@ class ControllerTest {
   /**
    * This test emulate full game using random values to simulate the user entry.
    */
-  @Test
+  @RepeatedTest(5)
   void gameTest(){
-    controller.tryStartGame(3);
+    assertEquals(0,controller.getSize());
+    controller.setSize(3);
+    assertEquals(3, controller.getSize());
+    controller.tryStartGame();
     createThreePlayerCharacter();
-    controller.tryStartGame(3);
+    controller.tryStartGame();
     createThreeEnemyCharacter();
-    controller.tryStartGame(3);
+    controller.tryStartGame();
     assertTrue(controller.isStartGame());
     controller.tryOnTurn();
     assertFalse(controller.isStartGame());
     assertTrue(controller.isOnTurn());
-    while(!controller.isEndGame() && (controller.isOnTurn() | controller.isWaitTurn())) {
+    while(!controller.isEndGame() && (controller.isOnTurn() | controller.isWaitTurn() | controller.isEndingWaitTurn())) {
       if (controller.isOnTurn()) {
-        if (controller.isEnemy(controller.getAttacker())) {
+        if (controller.isEnemy(controller.getAttacker()) &&
+            !controller.isPlayerCharacter(controller.getAttacker())) {
           assertFalse(controller.isSelectAttackTarget());
           controller.trySelectAttackTarget();
           assertTrue(controller.isSelectAttackTarget());
@@ -370,11 +420,10 @@ class ControllerTest {
           controller.attack(controller.getAttacker(), controller.getAttacked());
         }
       }
-      try {
-        Thread.sleep(300);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+      if(controller.isEndingWaitTurn()){
+        controller.tryOnTurn();
       }
+
     }
     assertTrue(controller.isEndGame());
     if (controller.getWinner().equals("ENEMY")){
@@ -385,18 +434,25 @@ class ControllerTest {
   }
 
   /**
-   * Test that controller catch the exceptions on all his catch statements.
+   * Checks if the find methods works properly
    */
   @Test
-  void testControllerExceptionCatch(){
-    controller.setState(new EndGameState(controller));
-    // Catch Exceptions check
-    controller.tryOnTurn();
-    controller.trySelectAttackTarget();
-    controller.tryEndTurn();
-    controller.tryWaitTurn();
-    controller.tryEndGame("PLAYER");
-    controller.tryEndGame("ENEMY");
+  void testFindMethods(){
+    createItems();
+    assertEquals(testAxe, controller.findWeapon(testAxe.getCurrentInfo().get("Name")));
+    assertNull(controller.findWeapon(testBlackMage.getCurrentInfo().get("Name")));
+    assertEquals(testKnife, controller.findWeapon(testKnife.getCurrentInfo().get("Name")));
+    assertEquals(testStaff, controller.findWeapon(testStaff.getCurrentInfo().get("Name")));
+    assertEquals(testSword, controller.findWeapon(testSword.getCurrentInfo().get("Name")));
+    assertEquals(testBow, controller.findWeapon(testBow.getCurrentInfo().get("Name")));
+    assertEquals(testEnemy, controller.findEnemy(testEnemy.toString()));
+    assertNull(controller.findEnemy(testBow.getCurrentInfo().get("Name")));
+    assertNull(controller.findCharacter(testBow.getCurrentInfo().get("Name")));
+    assertEquals(testBlackMage, controller.findCharacter(testBlackMage.toString()));
+    assertEquals(testWhiteMage, controller.findCharacter(testWhiteMage.toString()));
+    assertEquals(testEngineer, controller.findCharacter(testEngineer.toString()));
+    assertEquals(testKnight, controller.findCharacter(testKnight.toString()));
+    assertEquals(testThief, controller.findCharacter(testThief.toString()));
 
   }
 
