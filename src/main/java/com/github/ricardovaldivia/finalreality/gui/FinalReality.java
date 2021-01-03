@@ -28,8 +28,21 @@ import java.util.ArrayList;
 
 /**
  * Main entry point for the application.
- * <p>
- * <Complete here with the details of the implemented application>
+ * This application works with six stages {Start Game, Player Game, Enemy Game, Waiting Game, Win Game, Lose Game}
+ * In the first one, the user can set the initial configuration for the game like the size of the parties and also can
+ * choose his character class and set a name.
+ *
+ * After that the game can change between player, enemy and waiting game, according to the turns list.
+ * Where in the player stage, have to choose a weapon according to the class of the current character, then set it,
+ * later have to choose the enemy that the user want to attack, and then do the attack.
+ * In enemy stage, the user has to make the enemy play, where first has to make them choose an player's character
+ * objective, and then make the enemy do the attack.
+ * And in waiting game, the controller notify when a character is on turns list, and that change to player or
+ * enemy stage.
+ *
+ * Finally when the controller notify that player win or lose, the stage is change to win or lose Game, according with
+ * the notification of the controller.
+ *
  *
  * @author Ignacio Slater Muñoz.
  * @author Ricardo Valdivia Orellana.
