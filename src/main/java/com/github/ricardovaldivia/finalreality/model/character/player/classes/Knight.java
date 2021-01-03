@@ -20,7 +20,7 @@ public class Knight extends AbstractPlayerCharacter {
    * Creates a new Knight.
    *
    * @param name       the character's name
-   * @param turnsQueue
+   * @param turnsQueue the queue with the characters waiting for their turn
    */
   public Knight(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue, int maxHealth, int defense) {
     super(name, turnsQueue, maxHealth, defense);

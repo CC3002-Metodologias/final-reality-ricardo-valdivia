@@ -1,7 +1,6 @@
 package com.github.ricardovaldivia.finalreality.model.character.player.classes;
 
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
-import com.github.ricardovaldivia.finalreality.model.character.player.AbstractPlayerCharacter;
 import com.github.ricardovaldivia.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +20,7 @@ public class WhiteMage extends AbstractMageCharacter {
    * Creates a new White Mage.
    *
    * @param name       the character's name
-   * @param turnsQueue
+   * @param turnsQueue the queue with the characters waiting for their turn
    * @param maxMana  Max amount of mana of the WhiteMage
    */
 

@@ -15,12 +15,12 @@ import java.util.concurrent.BlockingQueue;
  * @author Ignacio Slater Muñoz.
  * @author Ricardo Valdivia Orellana.
  */
-public class Thief extends AbstractPlayerCharacter {
+public class Thief extends AbstractPlayerCharacter{
   /**
    * Creates a new Thief.
    *
    * @param name       the character's name
-   * @param turnsQueue
+   * @param turnsQueue the queue with the characters waiting for their turn
    */
 
   public Thief(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue, int maxHealth, int defense) {
