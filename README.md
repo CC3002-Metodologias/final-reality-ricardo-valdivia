@@ -23,6 +23,8 @@ The actual model was decided trying to satisfy the conditions of SOLID principle
 Description 
 -------
 
+###### MODEL
+
 The model for the Character implements an Interface, follow by an Abstract Class where it can be divided between enemy and player
 
 1. The Enemy Class, which use the Abstract Class for his constructor and is specified for Enemy CharacterClass type.
@@ -37,7 +39,19 @@ The model for the Weapons, implements an Interface, follow by an Abstract Class:
 2. This has five concrete subclass, one for each kind of weapon.
 3. The Staff, also includes an extra attribute, which is the magic damage.
 
+
 With the purpose of impose a relation between player character's and the weapons, the equipment methods use the double dispatch technique. That it's also used for the attack's method.
+
+
+the game allows different weapons for each character that are specified below:
+
+  * _**Thief**_ can equip a sword, staff or a bow.
+  * _**Knight**_ can equip a sword, axe or knife.
+  * _**Engineer**_ can equip an axe or a bow.
+  * _**Black mage**_ can equip a knife or a staff.
+  * _**White mage**_ can equip only a staff.
+-------
+###### CONTROLLER
 
 The Controller, is implemented like a concrete class, where it can be found all methods in order to be able to creates, knows and operate the models. The controller attributes are:
 1. The inventory with the weapons that a player can equip.
@@ -66,8 +80,9 @@ The States are:
 And the action of the user make the controller change of state.
 
 -------
-View
--------
+
+###### VIEW
+
 the view varies in six scenes or stages, and these are:
 
 1. Start Game, where is set the size of the parties, and then are created the player characters.
