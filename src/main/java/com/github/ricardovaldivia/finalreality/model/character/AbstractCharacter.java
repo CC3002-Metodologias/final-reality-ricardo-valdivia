@@ -1,10 +1,11 @@
 package com.github.ricardovaldivia.finalreality.model.character;
 
-import java.util.ArrayList;
+import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 
+import com.github.ricardovaldivia.finalreality.controller.handlers.IHandler;
 import com.github.ricardovaldivia.finalreality.model.character.player.classes.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,6 +24,10 @@ public abstract class AbstractCharacter implements ICharacter {
   private final int maxHealth;
   private boolean alive;
   protected ScheduledExecutorService scheduledExecutor;
+  protected final PropertyChangeSupport endTurnNotification = new PropertyChangeSupport(
+      this);
+  protected final PropertyChangeSupport notEmptyNotification = new PropertyChangeSupport(
+      this);
 
   /**
    * Creates a new character.
@@ -51,8 +56,17 @@ public abstract class AbstractCharacter implements ICharacter {
    * Adds this character to the turns queue.
    */
   public void addToQueue() {
-    turnsQueue.add(this);
-    scheduledExecutor.shutdown();
+    if (this.isAlive()) {
+      if(turnsQueue.isEmpty()) {
+        turnsQueue.add(this);
+        scheduledExecutor.shutdown();
+        notEmptyNotification.firePropertyChange("NOT_EMPTY", null, this);
+      }
+      else{
+        turnsQueue.add(this);
+        scheduledExecutor.shutdown();
+      }
+    }
   }
   @Override
   public String getName() {
@@ -86,10 +100,13 @@ public abstract class AbstractCharacter implements ICharacter {
   }
 
   @Override
-  public void attackBy( int damage){
+  public void attackBy(int damage){
+    int finalDamage = damage - this.getDefense();
     if (this.isAlive()) {
-      int finalDamage = damage - this.getDefense();
-      if (this.getCurrentHealth() - finalDamage < 0) {
+      if(damage<= this.getDefense()){
+        this.setCurrentHealth(this.getCurrentHealth() - 1);
+      }
+      else if (this.getCurrentHealth() - finalDamage <= 0) {
         this.setAlive(false);
         this.setCurrentHealth(0);
       } else {
@@ -101,6 +118,7 @@ public abstract class AbstractCharacter implements ICharacter {
   @Override
   public void attackByEnemy(Enemy enemy){
     this.attackBy(enemy.getAttack());
+    endTurnNotification.firePropertyChange("END_TURN", null, enemy);
   }
 
   @Override
@@ -111,6 +129,7 @@ public abstract class AbstractCharacter implements ICharacter {
     else{
         this.attackBy(0);
     }
+    endTurnNotification.firePropertyChange("END_TURN", null, blackMage);
   }
 
   @Override
@@ -121,6 +140,7 @@ public abstract class AbstractCharacter implements ICharacter {
     else{
       this.attackBy(0);
     }
+    endTurnNotification.firePropertyChange("END_TURN", null, whiteMage);
   }
 
   @Override
@@ -131,6 +151,7 @@ public abstract class AbstractCharacter implements ICharacter {
     else{
       this.attackBy(0);
     }
+    endTurnNotification.firePropertyChange("END_TURN", null, knight);
   }
 
   @Override
@@ -141,6 +162,7 @@ public abstract class AbstractCharacter implements ICharacter {
     else{
       this.attackBy(0);
     }
+    endTurnNotification.firePropertyChange("END_TURN", null, engineer);
   }
 
   @Override
@@ -151,6 +173,7 @@ public abstract class AbstractCharacter implements ICharacter {
     else{
       this.attackBy(0);
     }
+    endTurnNotification.firePropertyChange("END_TURN", null, thief);
   }
 
   @Override
@@ -162,5 +185,20 @@ public abstract class AbstractCharacter implements ICharacter {
     info.put("defense",String.valueOf(this.getDefense()));
     info.put("status",String.valueOf(this.isAlive()));
     return info;
+  }
+
+  @Override
+  public void addTurnsListener(final IHandler endTurnHandler) {
+    endTurnNotification.addPropertyChangeListener(endTurnHandler);
+  }
+
+  @Override
+  public void addNotEmptyListener(final IHandler turnsEmptyHandler){
+    notEmptyNotification.addPropertyChangeListener(turnsEmptyHandler);
+  }
+
+  @Override
+  public String toString(){
+    return getName();
   }
 }

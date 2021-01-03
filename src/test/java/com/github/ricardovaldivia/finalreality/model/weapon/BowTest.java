@@ -28,7 +28,7 @@ class BowTest extends AbstractWeaponTest{
   /**
    * Checks that the class' constructor and equals method works properly.
    */
-  @RepeatedTest(1000)
+  @RepeatedTest(500)
   void constructorTest(){
     checkConstruction(new Bow(BOW_NAME, physicalDamage, weight),
         testBowWeapon,
@@ -37,6 +37,14 @@ class BowTest extends AbstractWeaponTest{
         new Bow("Bow3", physicalDamage, weight),
         new Bow(BOW_NAME, r.nextInt(50) + 51, weight),
         new Bow(BOW_NAME, physicalDamage, r.nextInt(30) + 31));
+  }
+
+  /**
+   * Checks the getCurrentInfo method.
+   */
+  @RepeatedTest(60)
+  void getInfoTest(){
+    checkGetInfo(BOW_NAME, physicalDamage, weight,testBowWeapon);
   }
 
 }

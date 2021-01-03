@@ -3,6 +3,8 @@ package com.github.ricardovaldivia.finalreality.model.weapon;
 
 import com.github.ricardovaldivia.finalreality.model.character.player.classes.*;
 
+import java.util.HashMap;
+
 
 public abstract class AbstractWeapon implements IWeapon {
 
@@ -57,5 +59,14 @@ public abstract class AbstractWeapon implements IWeapon {
   @Override
   public IWeapon equippedByWhiteMage(WhiteMage whiteMage) {
     return null;
+  }
+
+  @Override
+  public HashMap<String, String> getCurrentInfo() {
+    var info = new HashMap<String, String>();
+    info.put("Name",this.getName());
+    info.put("PhysicalDamage",String.valueOf(this.getPhysicalDamage()));
+    info.put("Weight",String.valueOf(this.getWeight()));
+    return info;
   }
 }

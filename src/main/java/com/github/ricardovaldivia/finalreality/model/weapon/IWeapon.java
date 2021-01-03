@@ -3,6 +3,8 @@ package com.github.ricardovaldivia.finalreality.model.weapon;
 
 import com.github.ricardovaldivia.finalreality.model.character.player.classes.*;
 
+import java.util.HashMap;
+
 public interface IWeapon {
 
   /**
@@ -44,4 +46,9 @@ public interface IWeapon {
    * Returns the weapon that will be equipped by a Knight.
    */
   IWeapon equippedByKnight(Knight knight);
+
+  /**
+   * Returns the current status of the weapon
+   */
+  HashMap<String, String> getCurrentInfo();
 }

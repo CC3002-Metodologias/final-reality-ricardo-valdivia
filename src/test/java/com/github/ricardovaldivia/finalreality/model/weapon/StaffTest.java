@@ -46,7 +46,7 @@ class StaffTest extends AbstractWeaponTest{
   /**
    * Checks that the class' constructor and equals method works properly.
    */
-  @RepeatedTest(1000)
+  @RepeatedTest(500)
   void constructorTest(){
     checkStaffConstruction(new Staff(STAFF_NAME, physicalDamage, weight, magicDamage),
         testStaffWeapon,
@@ -56,6 +56,15 @@ class StaffTest extends AbstractWeaponTest{
         new Staff(STAFF_NAME, r.nextInt(50) + 51, weight, magicDamage),
         new Staff(STAFF_NAME, physicalDamage, r.nextInt(30) + 31, magicDamage),
         new Staff(STAFF_NAME, physicalDamage, weight, r.nextInt(50) + 51));
+  }
+
+  /**
+   * Checks the getCurrentInfo method.
+   */
+  @RepeatedTest(60)
+  void getInfoTest(){
+    checkGetInfo(STAFF_NAME, physicalDamage, weight,testStaffWeapon);
+    assertEquals(String.valueOf(magicDamage),testStaffWeapon.getCurrentInfo().get("MagicDamage"));
   }
 
 

@@ -5,6 +5,7 @@ import com.github.ricardovaldivia.finalreality.model.character.player.AbstractPl
 import com.github.ricardovaldivia.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
@@ -19,7 +20,7 @@ public class Knight extends AbstractPlayerCharacter {
    * Creates a new Knight.
    *
    * @param name       the character's name
-   * @param turnsQueue
+   * @param turnsQueue the queue with the characters waiting for their turn
    */
   public Knight(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue, int maxHealth, int defense) {
     super(name, turnsQueue, maxHealth, defense);
@@ -53,5 +54,17 @@ public class Knight extends AbstractPlayerCharacter {
     if (this.isAlive()) {
       character.attackByKnight(this);
     }
+  }
+
+  @Override
+  public HashMap<String, String> getCurrentInfo() {
+    var info = super.getCurrentInfo();
+    info.put("Character Class","Knight");
+    return info;
+  }
+
+  @Override
+  public String toString(){
+    return super.toString() + ", "+ "Knight";
   }
 }

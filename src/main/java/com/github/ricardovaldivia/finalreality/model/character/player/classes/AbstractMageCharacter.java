@@ -34,9 +34,7 @@ public abstract class AbstractMageCharacter extends AbstractPlayerCharacter {
    */
   public int getMaxMana(){return maxMana;}
 
-  /**
-   * Returns the current status of a black mage.
-   */
+  @Override
   public HashMap<String, String> getCurrentInfo() {
     var info = super.getCurrentInfo();
     info.put("maxMana",String.valueOf(this.getMaxMana()));

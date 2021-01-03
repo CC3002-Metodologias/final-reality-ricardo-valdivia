@@ -1,8 +1,7 @@
 package com.github.ricardovaldivia.finalreality.model.character.player.classes;
 
+
 import com.github.ricardovaldivia.finalreality.model.character.ICharacter;
-import com.github.ricardovaldivia.finalreality.model.character.player.AbstractPlayerCharacter;
-import com.github.ricardovaldivia.finalreality.model.character.player.IPlayerCharacter;
 import com.github.ricardovaldivia.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +20,7 @@ public class BlackMage extends AbstractMageCharacter {
    * Creates a new Black Mage.
    *
    * @param name       the character's name
-   * @param turnsQueue
+   * @param turnsQueue the queue with the characters waiting for their turn
    * @param maxMana  Max amount of mana of the WhiteMage
    */
   
@@ -59,5 +58,18 @@ public class BlackMage extends AbstractMageCharacter {
         getDefense() == that.getDefense() &&
         getMaxHealth() == that.getMaxHealth() &&
         getMaxMana() == that.getMaxMana();
+  }
+
+  @Override
+  public HashMap<String, String> getCurrentInfo() {
+    var info = super.getCurrentInfo();
+    info.put("Character Class","Black Mage");
+    return info;
+  }
+
+
+  @Override
+  public String toString(){
+    return super.toString() + ", "+ "Black Mage";
   }
 }

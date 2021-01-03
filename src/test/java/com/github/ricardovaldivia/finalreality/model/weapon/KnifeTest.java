@@ -27,7 +27,7 @@ class KnifeTest extends AbstractWeaponTest{
   /**
    * Checks that the class' constructor and equals method works properly.
    */
-  @RepeatedTest(1000)
+  @RepeatedTest(500)
   void constructorTest(){
     checkConstruction(new Knife(KNIFE_NAME, physicalDamage, weight),
         testKnifeWeapon,
@@ -36,6 +36,14 @@ class KnifeTest extends AbstractWeaponTest{
         new Knife("Knife3", physicalDamage, weight),
         new Knife(KNIFE_NAME, r.nextInt(50) + 51, weight),
         new Knife(KNIFE_NAME, physicalDamage, r.nextInt(30) + 31));
+  }
+
+  /**
+   * Checks the getCurrentInfo method.
+   */
+  @RepeatedTest(60)
+  void getInfoTest(){
+    checkGetInfo(KNIFE_NAME, physicalDamage, weight, testKnifeWeapon);
   }
 
 }

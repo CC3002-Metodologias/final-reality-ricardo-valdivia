@@ -1,11 +1,13 @@
 package com.github.ricardovaldivia.finalreality.model.character;
 
+import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import com.github.ricardovaldivia.finalreality.controller.handlers.IHandler;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -18,6 +20,8 @@ public class Enemy extends AbstractCharacter {
 
   private final int weight;
   private final int attack;
+  private final PropertyChangeSupport enemyDieNotification = new PropertyChangeSupport(
+      this);
 
   /**
    * Creates a new enemy with a name, a weight and the queue with the characters ready to
@@ -76,16 +80,34 @@ public class Enemy extends AbstractCharacter {
   }
 
 
-  /**
-   * Returns the current status of the enemy.
-   */
+  @Override
   public HashMap<String, String> getCurrentInfo() {
    var info =  super.getCurrentInfo();
    info.put("Attack", String.valueOf(this.getAttack()));
    info.put("Weight", String.valueOf(this.getWeight()));
+   info.put("Character Class", "Enemy");
    return info;
   }
 
+  @Override
+  public void setCurrentHealth(int newHealth) {
+    super.setCurrentHealth(newHealth);
+    if (newHealth <= 0){
+      enemyDieNotification.firePropertyChange("ENEMY_DEATH", null, this);
+    }
+  }
+
+  /**
+   * adds a enemyListener to this enemy, to handle his death.
+   */
+  public void addEnemyListener(final IHandler enemyDeathHandler) {
+    enemyDieNotification.addPropertyChangeListener(enemyDeathHandler);
+  }
+
+  @Override
+  public String toString() {
+    return super.toString() +", Weight: "+ getWeight()+", Attack: "+ getAttack();
+  }
 }
 
 
