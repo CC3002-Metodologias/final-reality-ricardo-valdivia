@@ -31,7 +31,7 @@ class KnightTest extends AbstractPlayerCharacterTest {
   /**
    * Checks that the class' constructor and equals method works properly.
    */
-  @RepeatedTest(1000)
+  @RepeatedTest(500)
   void constructorTest() {
     checkConstruction(new Knight(KNIGHT_NAME, turns, maxHealth, defense),
         testKnightCharacter,
@@ -45,7 +45,7 @@ class KnightTest extends AbstractPlayerCharacterTest {
   /**
    * Checks that the class' equip method works properly.
    */
-  @RepeatedTest(1000)
+  @RepeatedTest(500)
   void equipTest() {
     assertFalse(testKnightCharacter.isEquipped());
     testKnightCharacter.equip(testWeapons.get(0));
@@ -63,7 +63,7 @@ class KnightTest extends AbstractPlayerCharacterTest {
   /**
    * Checks that the class' attack method works properly.
    */
-  @RepeatedTest(1000)
+  @RepeatedTest(500)
   void attackByEngineerTest() {
     var playerCharacterTest = new Thief("Thief", turns, r.nextInt(60), r.nextInt(30));
     testKnightCharacter.attack(playerCharacterTest);

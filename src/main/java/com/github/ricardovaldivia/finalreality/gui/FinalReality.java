@@ -21,13 +21,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Main entry point for the application.
@@ -41,10 +38,9 @@ public class FinalReality extends Application {
 
   private static final String RESOURCE_PATH = "src/main/resources/";
   private final Controller controller = new Controller();
-  private int partySize;
   private String characterClass;
   private String currentWeapon;
-  private String[] enemiesName = new String[]{"VOLDEMORT", "GRINDELWALD", "ISMA", "THANOS", "DAVY JONES", "" +
+  private final String[] enemiesName = new String[]{"VOLDEMORT", "GRINDELWALD", "ISMA", "THANOS", "DAVY JONES", "" +
       "DARTH VADER", "LOKI", "MALFOY", "JOKER", "GOLLUM", "CRUELA DE VIL", "PRINCIPE HANS" ,"MR. ELECTRIC"};
 
   public static void main(String[] args) {
@@ -65,11 +61,15 @@ public class FinalReality extends Application {
   }
 
 
+  /**
+   * Create the initial stage for the gui.
+   */
+
   private void startingGame(Stage stage) throws FileNotFoundException {
     var startRoot = new Group();
     var sizeRoot = new Group();
     var charactersRoot = new Group();
-    readImage("configWallpaper.jpg", 0,0, startRoot);
+    readImage("configWallpaper.jpg", startRoot);
     stage.setResizable(false);
     stage.setTitle("Final Reality");
     // Title
@@ -82,7 +82,7 @@ public class FinalReality extends Application {
     sizeArray.add("2");
     sizeArray.add("3");
     sizeArray.add("4");
-    createPartySizeChoiceBox(600, 150, sizeArray, Color.AQUAMARINE, sizeRoot);
+    createPartySizeChoiceBox(sizeArray, sizeRoot);
 
     // Choice class box
     var classArray = new ArrayList<String>();
@@ -96,25 +96,27 @@ public class FinalReality extends Application {
     var setSizeButton = createButton("Set Size", 700, 150, sizeRoot);
     setSizeButton.setOnAction(event -> {
       startRoot.getChildren().remove(sizeRoot);
-      List<Integer> range = IntStream.rangeClosed(
-          0, controller.getSize()-1).boxed().collect(Collectors.toList());
-      for (var enemy : range){
+      for (int i = 0; i< controller.getSize() ; i++) {
         controller.createEnemyCharacter(
             enemiesName[
                 controller.randomValue(
                     0, enemiesName.length)],
             controller.randomValue(40,121),
-            controller.randomValue(50,111),
+            controller.randomValue(70,121),
             controller.randomValue(5, 30),
             controller.randomValue(30,121));
       }
-      displayEnemiesH(400,200, Color.LIGHTCORAL, startRoot);
+
+      // Display the enemies information on the screen
+      displayEnemiesH(startRoot);
       var enemyParty = createRectangleText("ENEMIES:   ", 400,  120, Color.LIGHTGREEN, startRoot);
       uniformScale(enemyParty, 1.3);
       var playerParty = createRectangleText(" YOUR PARTY:    ", 400,  400, Color.LIGHTGREEN, startRoot);
       uniformScale(playerParty, 1.3);
-      var textField = createLabeledTextField("Name:  ", 70, 200, Color.GREENYELLOW, charactersRoot);
-      createCharacterClassChoiceBox(100, 250, classArray, Color.AQUAMARINE, charactersRoot);
+      var textField = createLabeledTextField(charactersRoot);
+      createCharacterClassChoiceBox(classArray, charactersRoot);
+
+      // Creates the characters
       var setCharacter = createButton("Set Character",180, 200, charactersRoot);
       setCharacter.setOnAction(event1 -> {
         if (characterClass != null) {
@@ -136,10 +138,12 @@ public class FinalReality extends Application {
                 controller.randomValue(10, 35));
           }
           if (characterClass.equals("Engineer")) {
-            controller.createKnightCharacter(field.getText(), controller.randomValue(60,150),
+            controller.createEngineerCharacter(field.getText(), controller.randomValue(60,150),
                 controller.randomValue(10, 30));
           }
-          displayPlayerPartyH(400, 480, Color.LIGHTGREEN, startRoot);
+          displayPlayerPartyH(startRoot);
+
+          // Start the game
           if (controller.getPlayerParty().size() == controller.getSize()) {
             startRoot.getChildren().remove(charactersRoot);
             var startGame = createButton("START GAME", 25, 20, startRoot);
@@ -158,48 +162,60 @@ public class FinalReality extends Application {
     createScene(stage, startRoot);
   }
 
+  /**
+   * Create the stage for the gui when the current player is player's character.
+   */
   private void inPlayerGame(Stage stage) throws FileNotFoundException {
     var inPlayerGameRoot = new Group();
     var equipRoot = new Group();
     var objectiveRoot = new Group();
 
-
-    readImage("inGameWallpaper.jpg", 0,0, inPlayerGameRoot);
+    readImage("inGameWallpaper.jpg", inPlayerGameRoot);
     // Title
     var firstTitle = createRectangleText("In Player Turn ", 600, 50, Color.DARKTURQUOISE, inPlayerGameRoot);
     uniformScale(firstTitle,3);
-    displayEnemiesV(200,50, Color.LIGHTCORAL, inPlayerGameRoot);
-    displayPlayerPartyV(900, 50, Color.LIGHTGREEN, inPlayerGameRoot);
+    // Display the information of the enemies and the party of the player on the screen
+    displayEnemiesV(inPlayerGameRoot);
+    displayPlayerPartyV(inPlayerGameRoot);
+
+    // Choose the weapon
     var weaponArray = new ArrayList<String>();
     weaponArray.add("AXE");
     weaponArray.add("BOW");
     weaponArray.add("KNIFE");
     weaponArray.add("STAFF");
     weaponArray.add("SWORD");
-    createWeaponEquipChoiceBox(600, 300, weaponArray, Color.GOLDENROD, equipRoot);
-    displayCurrentPlayer(580,130,Color.GOLD, inPlayerGameRoot);
+
+    createWeaponEquipChoiceBox(weaponArray, equipRoot);
+    displayCurrentPlayer(inPlayerGameRoot);
     var setWeaponButton = createButton("Set Weapon", 600,350, equipRoot);
     setWeaponButton.setOnAction(event -> {
       if(controller.isEquipped((IPlayerCharacter) controller.getAttacker())) {
         inPlayerGameRoot.getChildren().remove(equipRoot);
-        displayCurrentWeapon(580, 260,Color.GOLD, inPlayerGameRoot);
+        displayCurrentWeapon(inPlayerGameRoot);
         var stringEnemiesArray = new ArrayList<String>();
         for(var enemy : controller.getEnemies()){
           stringEnemiesArray.add(enemy.toString());
         }
         controller.trySelectAttackTarget();
-        createObjectiveChoiceBox(580,380, stringEnemiesArray,Color.GOLDENROD, objectiveRoot);
+
+        // Choose the objective
+        createObjectiveChoiceBox(stringEnemiesArray, objectiveRoot);
         var setObjectiveButton = createButton("Set Objective", 580, 420, objectiveRoot);
         setObjectiveButton.setOnAction(event1 -> {
-          displayCurrentEnemy(580, 380, Color.FIREBRICK, inPlayerGameRoot);
+          if(controller.getAttacked() != null){
+          displayCurrentEnemy(380, inPlayerGameRoot);
           inPlayerGameRoot.getChildren().remove(objectiveRoot);
           controller.tryEndTurn();
+
+          // Do the attack action
           var attackButton = createButton("Attack", 600, 570, inPlayerGameRoot);
           attackButton.setOnAction(event2 -> {
             controller.attack(controller.getAttacker(), controller.getAttacked());
             checkWhereToGo(stage);
           });
-        });
+        }
+      });
       }
       else{
         createRectangleText("You can't equip that WEAPON    ", 550, 400, Color.CRIMSON, equipRoot);
@@ -212,23 +228,30 @@ public class FinalReality extends Application {
   }
 
 
+  /**
+   * Create the stage for the gui when the current player is an enemy.
+   */
   private void inEnemyGame(Stage stage) throws FileNotFoundException {
     var inEnemyGameRoot = new Group();
     var objectiveRoot = new Group();
 
-    readImage("inGameWallpaper.jpg", 0,0, inEnemyGameRoot);
+    readImage("inGameWallpaper.jpg", inEnemyGameRoot);
     var firstTitle = createRectangleText("In Enemy Turn ", 600, 50, Color.DARKTURQUOISE, inEnemyGameRoot);
     uniformScale(firstTitle,3);
 
-    displayEnemiesV(200,50, Color.LIGHTCORAL, inEnemyGameRoot);
-    displayPlayerPartyV(900, 50, Color.LIGHTGREEN, inEnemyGameRoot);
-    displayCurrentPlayer(580,130,Color.GOLD, inEnemyGameRoot);
+    // Display the information of the enemies and the party of the player on the screen
+    displayEnemiesV(inEnemyGameRoot);
+    displayPlayerPartyV(inEnemyGameRoot);
+    displayCurrentPlayer(inEnemyGameRoot);
     controller.trySelectAttackTarget();
+    // Do the controller set the objective for the enemy
     var setObjective = createButton("Set Objective", 580,360, objectiveRoot);
     setObjective.setOnAction(event -> {
       controller.tryEndTurn();
       inEnemyGameRoot.getChildren().remove(objectiveRoot);
-      displayCurrentEnemy(580,260,Color.FIREBRICK,inEnemyGameRoot);
+      displayCurrentEnemy(260, inEnemyGameRoot);
+
+      // Do the attack action
       var attackButton = createButton("Attack", 600, 500, inEnemyGameRoot);
       attackButton.setOnAction(event1 -> {
         controller.attack(controller.getAttacker(), controller.getAttacked());
@@ -240,30 +263,41 @@ public class FinalReality extends Application {
     createScene(stage, inEnemyGameRoot);
   }
 
+
+  /**
+   * Create the Win stage for the gui.
+   */
   private void WinGame(Stage stage) throws FileNotFoundException {
     var inWinRoot = new Group();
-    readImage("playerWinWallpaper.jpg", 0, 0 ,inWinRoot);
+    readImage("playerWinWallpaper.jpg", inWinRoot);
     var firstTitle = createRectangleText("You Win  ", 600, 50, Color.DARKTURQUOISE, inWinRoot);
     uniformScale(firstTitle,3);
 
     createScene(stage, inWinRoot);
   }
 
+  /**
+   * Create the Lose stage for the gui.
+   */
   private void LoseGame(Stage stage) throws FileNotFoundException {
     var inLoseGame = new Group();
-    readImage("enemyWinWallpaper.jpg", 0, 0 ,inLoseGame);
+    readImage("enemyWinWallpaper.jpg", inLoseGame);
     var firstTitle = createRectangleText("You Lose  ", 600, 50, Color.DARKTURQUOISE, inLoseGame);
     uniformScale(firstTitle,3);
     createScene(stage, inLoseGame);
   }
 
+  /**
+   * Create the waiting stage for the gui.
+   */
   private void waitGame(Stage stage) throws FileNotFoundException {
     var waitGameRoot = new Group();
 
-    readImage("waitingWallpaper.jpg", 0, 0, waitGameRoot);
+    readImage("waitingWallpaper.jpg", waitGameRoot);
     if(controller.isWaitTurn()){
-      createRectangleText("All characters are waiting to play   ",
-          600, 300, Color.GOLD, waitGameRoot);
+      var rectangle = createRectangleText("All characters are waiting to play  ",
+          580, 260, Color.GOLD, waitGameRoot);
+      uniformScale(rectangle, 1.5);
       waitingAnimator(stage);
     }
 
@@ -271,6 +305,10 @@ public class FinalReality extends Application {
   }
 
 
+  /**
+   * An animation that change the stages when a character enter to
+   * the queue, manage by handlers.
+   */
   private void waitingAnimator(Stage stage) {
     AnimationTimer timer = new AnimationTimer() {
       @Override
@@ -297,6 +335,10 @@ public class FinalReality extends Application {
     };
     timer.start();
   }
+
+  /**
+   * Select the corresponding stage of the gui according with the controller stage.
+   */
 
   private void checkWhereToGo(Stage stage){
     if(controller.isWaitTurn()){
@@ -340,10 +382,15 @@ public class FinalReality extends Application {
       }
     }
   }
-  private void displayCurrentPlayer(
-      double X, double Y,
-      Color fill, Group mainRoot){
+
+  /**
+   * Shows all the information of the current player
+   */
+  private void displayCurrentPlayer(Group mainRoot){
     var root = new Group();
+    Color fill = Color.GOLD;
+    double X = 580;
+    double Y = 120;
     var stats = controller.getCurrentInfo(controller.getAttacker());
     createRectangleText(
         "Current Player " ,
@@ -364,229 +411,249 @@ public class FinalReality extends Application {
     mainRoot.getChildren().add(root);
   }
 
+  /**
+   * Show all the information of the objective selected.
+   */
   private void displayCurrentEnemy(
-      double X, double Y,
-      Color fill, Group mainRoot){
+      double Y,
+      Group mainRoot){
     var root = new Group();
     var stats = controller.getCurrentInfo(controller.getAttacked());
     createRectangleText(
         "Current Objective " ,
-        X, Y , fill, root);
+        580, Y , Color.FIREBRICK, root);
     createRectangleText(
         "Name" + ": " + stats.get("Name") + "        ",
-        X, Y + 25, fill, root);
+        580, Y + 25, Color.FIREBRICK, root);
     createRectangleText(
         "Character Class" +
             ": " + stats.get("Character Class") + "  ",
-        X + 10, Y + 50 , fill, root);
+        (double) 580 + 10, Y + 50 , Color.FIREBRICK, root);
     createRectangleText(
         "HP"+ ": " + stats.get("currentHealth") + "/" + stats.get("maxHealth") + "   ",
-        X + 10, Y + 75 , fill, root);
+        (double) 580 + 10, Y + 75 , Color.FIREBRICK, root);
     createRectangleText(
         "Defense" + ": " + stats.get("defense") + "   ",
-        X + 10, Y + 100 , fill, root);
+        (double) 580 + 10, Y + 100 , Color.FIREBRICK, root);
     mainRoot.getChildren().add(root);
   }
 
+  /**
+   * Show all the information of the weapon selected.
+   */
   private void displayCurrentWeapon(
-      double X, double Y,
-      Color fill, Group mainRoot){
+      Group mainRoot){
     var root = new Group();
     var stats = controller.getCurrentInfo(controller.findWeapon(currentWeapon));
     createRectangleText(
         "Current Weapon  ",
-        X, Y , fill, root);
+        580, 260, Color.GOLD, root);
     createRectangleText(
         "Name" + ": " + stats.get("Name") + "    ",
-        X, Y + 25, fill, root);
+        580, (double) 260 + 25, Color.GOLD, root);
     createRectangleText(
         "Attack" +
             ": " + stats.get("PhysicalDamage") + "  ",
-        X + 10, Y + 50 , fill, root);
+        (double) 580 + 10, (double) 260 + 50 , Color.GOLD, root);
     createRectangleText(
         "Weight"+ ":  " + stats.get("Weight")+" ",
-        X + 10, Y + 75 , fill, root);
+        (double) 580 + 10, (double) 260 + 75 , Color.GOLD, root);
     mainRoot.getChildren().add(root);
   }
 
+  /**
+   * Shows the information of all the characters on the party, in a horizontal way.
+   */
 
   private void displayPlayerPartyH(
-      double X, double Y,
-      Color fill, Group mainRoot){
+      Group mainRoot){
     var root = new Group();
     var posXIter = 0;
     for (var character : controller.getPlayerParty()){
       var stats = controller.getCurrentInfo(character);
       createRectangleText(
           "Name" + ": " + stats.get("Name") + "   ",
-          X+ (posXIter * 180), Y , fill, root);
+          (double) 400 + (posXIter * 180), 480, Color.LIGHTGREEN, root);
       createRectangleText(
           "Character Class" +
               ": " + stats.get("Character Class") + "  ",
-          X + 10 + (posXIter * 180), Y + 25 , fill, root);
+          (double) 400 + 10 + (posXIter * 180), (double) 480 + 25 , Color.LIGHTGREEN, root);
       createRectangleText(
           "HP"+ ": " + stats.get("currentHealth") + "/" + stats.get("maxHealth") + "   ",
-          X + 10 + (posXIter * 180), Y + 50 , fill, root);
+          (double) 400 + 10 + (posXIter * 180), (double) 480 + 50 , Color.LIGHTGREEN, root);
       createRectangleText(
           "Defense" + ": " + stats.get("defense") + "   ",
-          X + 10 + (posXIter * 180), Y + 75 , fill, root);
+          (double) 400 + 10 + (posXIter * 180), (double) 480 + 75 , Color.LIGHTGREEN, root);
       createRectangleText(
           "Mana" + ": " + stats.get("maxMana") + "   ",
-          X + 10 + (posXIter * 180), Y + 100 , fill, root);
+          (double) 400 + 10 + (posXIter * 180), (double) 480 + 100 , Color.LIGHTGREEN, root);
       posXIter ++;
     }
     mainRoot.getChildren().add(root);
   }
+
+  /**
+   * Shows the information of all the characters on the party, in a vertical way.
+   */
   private void displayPlayerPartyV(
-      double X, double Y,
-      Color fill, Group mainRoot){
+      Group mainRoot){
     var root = new Group();
     var posYIter = 0;
     for (var character : controller.getPlayerParty()){
       var stats = controller.getCurrentInfo(character);
       createRectangleText(
           "Name" + ": " + stats.get("Name") + "   ",
-          X, Y + (posYIter * 135), fill, root);
+          900, (double) 50 + (posYIter * 135), Color.LIGHTGREEN, root);
       createRectangleText(
           "Character Class" +
               ": " + stats.get("Character Class") + "  ",
-          X + 10 , Y + 25 + (posYIter * 135), fill, root);
+          (double) 900 + 10 , (double) 50 + 25 + (posYIter * 135), Color.LIGHTGREEN, root);
       createRectangleText(
           "HP"+ ": " + stats.get("currentHealth") + "/" + stats.get("maxHealth") + "   ",
-          X + 10 , Y + 50 + (posYIter * 135), fill, root);
+          (double) 900 + 10 , (double) 50 + 50 + (posYIter * 135), Color.LIGHTGREEN, root);
       createRectangleText(
           "Defense" + ": " + stats.get("defense") + "   ",
-          X + 10 , Y + 75 + (posYIter * 135), fill, root);
+          (double) 900 + 10 , (double) 50 + 75 + (posYIter * 135), Color.LIGHTGREEN, root);
       createRectangleText(
           "Mana" + ": " + stats.get("maxMana") + "   ",
-          X + 10 , Y + 100 + (posYIter * 135), fill, root);
+          (double) 900 + 10 , (double) 50 + 100 + (posYIter * 135), Color.LIGHTGREEN, root);
       posYIter ++;
     }
     mainRoot.getChildren().add(root);
   }
 
+
+  /**
+   * Shows the information of all the enemies, in a horizontal way.
+   */
   private void displayEnemiesH(
-      double X, double Y,
-      Color fill, Group mainRoot){
+      Group mainRoot){
     var root = new Group();
     var posXIter = 0;
     for (var character : controller.getEnemies()){
       var stats = controller.getCurrentInfo(character);
       createRectangleText(
           "Name" + ": " + stats.get("Name") + "        ",
-          X+ (posXIter * 180), Y , fill, root);
+          (double) 400 + (posXIter * 180), 200, Color.LIGHTCORAL, root);
       createRectangleText(
           "Character Class" +
               ": " + stats.get("Character Class") + "  ",
-          X + 10 + (posXIter * 180), Y + 25 , fill, root);
+          (double) 400 + 10 + (posXIter * 180), (double) 200 + 25 , Color.LIGHTCORAL, root);
       createRectangleText(
           "HP"+ ": " + stats.get("currentHealth") + "/" + stats.get("maxHealth") + "   ",
-          X + 10 + (posXIter * 180), Y + 50 , fill, root);
+          (double) 400 + 10 + (posXIter * 180), (double) 200 + 50 , Color.LIGHTCORAL, root);
       createRectangleText(
           "Defense" + ": " + stats.get("defense") + "   ",
-          X + 10 + (posXIter * 180), Y + 75 , fill, root);
+          (double) 400 + 10 + (posXIter * 180), (double) 200 + 75 , Color.LIGHTCORAL, root);
       createRectangleText(
           "Weight" + ": " + stats.get("Weight") + "   ",
-          X + 10 + (posXIter * 180), Y + 100 , fill, root);
+          (double) 400 + 10 + (posXIter * 180), (double) 200 + 100 , Color.LIGHTCORAL, root);
       createRectangleText(
           "Attack" + ": " + stats.get("Attack") + "   ",
-          X + 10 + (posXIter * 180), Y + 125 , fill, root);
+          (double) 400 + 10 + (posXIter * 180), (double) 200 + 125 , Color.LIGHTCORAL, root);
       posXIter ++;
     }
     mainRoot.getChildren().add(root);
   }
 
+  /**
+   * Shows the information of all the enemies, in a vertical way.
+   */
   private void displayEnemiesV(
-      double X, double Y,
-      Color fill, Group mainRoot){
+      Group mainRoot){
     var root = new Group();
     var posYIter = 0;
     for (var character : controller.getEnemies()){
       var stats = controller.getCurrentInfo(character);
       createRectangleText(
           "Name" + ": " + stats.get("Name") + "        ",
-          X, Y + (posYIter * 160), fill, root);
+          200, (double) 50 + (posYIter * 160), Color.LIGHTCORAL, root);
       createRectangleText(
           "Character Class" +
               ": " + stats.get("Character Class") + "  ",
-          X + 10 , Y + 25 + (posYIter * 160) , fill, root);
+          (double) 200 + 10 , (double) 50 + 25 + (posYIter * 160) , Color.LIGHTCORAL, root);
       createRectangleText(
           "HP"+ ": " + stats.get("currentHealth") + "/" + stats.get("maxHealth") + "   ",
-          X + 10 , Y + 50 + (posYIter * 160), fill, root);
+          (double) 200 + 10 , (double) 50 + 50 + (posYIter * 160), Color.LIGHTCORAL, root);
       createRectangleText(
           "Defense" + ": " + stats.get("defense") + "   ",
-          X + 10 , Y + 75 + (posYIter * 160), fill, root);
+          (double) 200 + 10 , (double) 50 + 75 + (posYIter * 160), Color.LIGHTCORAL, root);
       createRectangleText(
           "Weight" + ": " + stats.get("Weight") + "   ",
-          X + 10 , Y + 100 + (posYIter * 160), fill, root);
+          (double) 200 + 10 , (double) 50 + 100 + (posYIter * 160), Color.LIGHTCORAL, root);
       createRectangleText(
           "Attack" + ": " + stats.get("Attack") + "   ",
-          X + 10 , Y + 125 + (posYIter * 160), fill, root);
+          (double) 200 + 10 , (double) 50 + 125 + (posYIter * 160), Color.LIGHTCORAL, root);
       posYIter ++;
     }
     mainRoot.getChildren().add(root);
   }
 
-  private void createPartySizeChoiceBox (
-      double X, double Y, ArrayList<String> setValues,
-      Color fill, Group mainRoot) {
+  /**
+   * Create a box where the user can choose the size of the parties on the game.
+   */
+  private void createPartySizeChoiceBox(
+      ArrayList<String> setValues,
+      Group mainRoot) {
     var root = new Group();
     ObservableList<String> values = FXCollections.observableArrayList();
     values.addAll(setValues);
     var choice = new ChoiceBox<>(values);
-    choice.setLayoutX(X);
-    choice.setLayoutY(Y);
+    choice.setLayoutX(600);
+    choice.setLayoutY(150);
     var text = "Choose Party Size: ";
     createRectangleText(
-        text, X - (text.length() * 5.4), Y,
-        fill, root);
+        text, (double) 600 - (text.length() * 5.4), 150,
+        Color.AQUAMARINE, root);
     SingleSelectionModel<String> model =
         choice.getSelectionModel();
     model.selectedItemProperty().addListener(
-        (observableValue, s, text1) -> {
-          controller.setSize(Integer.parseInt(text1));
-        });
+        (observableValue, s, text1) -> controller.setSize(Integer.parseInt(text1)));
     root.getChildren().add(choice);
     mainRoot.getChildren().add(root);
   }
 
-
-  private void createCharacterClassChoiceBox (
-      double X, double Y, ArrayList<String> setValues,
-      Color fill, Group mainRoot) {
+  /**
+   * Create a box where the user can choose character class for an specific character.
+   */
+  private void createCharacterClassChoiceBox(
+      ArrayList<String> setValues,
+      Group mainRoot) {
     var root = new Group();
     ObservableList<String> values = FXCollections.observableArrayList();
     values.addAll(setValues);
     var choice = new ChoiceBox<>(values);
-    choice.setLayoutX(X);
-    choice.setLayoutY(Y);
+    choice.setLayoutX(100);
+    choice.setLayoutY(250);
     var text = "Choose Class: ";
     createRectangleText(
-        text, X - (text.length() * 5.4), Y,
-        fill, root);
+        text, (double) 100 - (text.length() * 5.4), 250,
+        Color.AQUAMARINE, root);
     SingleSelectionModel<String> model =
         choice.getSelectionModel();
     model.selectedItemProperty().addListener(
-        (observableValue, s, text1) -> {
-         characterClass = text1;
-        });
+        (observableValue, s, text1) -> characterClass = text1);
     root.getChildren().add(choice);
     mainRoot.getChildren().add(root);
   }
 
-  private void createWeaponEquipChoiceBox (
-      double X, double Y, ArrayList<String> setValues,
-      Color fill, Group mainRoot) {
+  /**
+   * Create a box where the user can choose the weapon that want to equip to the current
+   * player character.
+   */
+  private void createWeaponEquipChoiceBox(
+      ArrayList<String> setValues,
+      Group mainRoot) {
     var root = new Group();
     ObservableList<String> values = FXCollections.observableArrayList();
     values.addAll(setValues);
     var choice = new ChoiceBox<>(values);
-    choice.setLayoutX(X);
-    choice.setLayoutY(Y);
+    choice.setLayoutX(600);
+    choice.setLayoutY(300);
     var text = "Choose Weapon:    ";
     createRectangleText(
-        text, X - (text.length() * 5.4), Y,
-        fill, root);
+        text, (double) 600 - (text.length() * 5.4), 300,
+        Color.GOLDENROD, root);
     SingleSelectionModel<String> model =
         choice.getSelectionModel();
     model.selectedItemProperty().addListener(
@@ -599,19 +666,23 @@ public class FinalReality extends Application {
     mainRoot.getChildren().add(root);
   }
 
-  private void createObjectiveChoiceBox (
-      double X, double Y, ArrayList<String> setValues,
-      Color fill, Group mainRoot) {
+
+  /**
+   * Create a box where the user can choose the enemy that want to attack.
+   */
+  private void createObjectiveChoiceBox(
+      ArrayList<String> setValues,
+      Group mainRoot) {
     var root = new Group();
     ObservableList<String> values = FXCollections.observableArrayList();
     values.addAll(setValues);
     var choice = new ChoiceBox<>(values);
-    choice.setLayoutX(X);
-    choice.setLayoutY(Y);
+    choice.setLayoutX(580);
+    choice.setLayoutY(380);
     var text = "Choose your objective: ";
     createRectangleText(
-        text, X - (text.length() * 5.4), Y,
-        fill, root);
+        text, (double) 580 - (text.length() * 5.4), 380,
+        Color.GOLDENROD, root);
     SingleSelectionModel<String> model =
         choice.getSelectionModel();
     model.selectedItemProperty().addListener(
@@ -624,82 +695,106 @@ public class FinalReality extends Application {
   }
 
 
+  /**
+   * Create a box where the user can insert the name for his characters.
+   */
   private Group createLabeledTextField(
-      String text, double X, double Y, Color fill, Group mainRoot) {
+      Group mainRoot) {
     var root = new Group();
     createRectangleText(
-        text, X - (text.length() * 5.5), Y, fill, root);
-    createTextField(X, Y, root);
+        "Name:  ", (double) 70 - ("Name:  ".length() * 5.5), 200, Color.GREENYELLOW, root);
+    createTextField(root);
     mainRoot.getChildren().add(root);
     return root;
   }
 
-  private TextField createTextField (
-      double X, double Y, Group root) {
+  /**
+   * Create a box where text can be added.
+   */
+  private void createTextField(
+      Group root) {
     var field = new TextField();
-    field.setLayoutX(X);
-    field.setLayoutY(Y);
+    field.setLayoutX(70);
+    field.setLayoutY(200);
     root.getChildren().add(field);
-    return field;
   }
 
+  /**
+   * Scale any node according to a certain amount that it's given.
+   */
   private void uniformScale (Node node, double scale) {
     node.setScaleX(scale);
     node.setScaleY(scale);
   }
 
+
+  /**
+   * Create a rectangle with color and text on a certain position.
+   */
   private Group createRectangleText(
       String text,
       double X, double Y, Paint fill, Group mainRoot) {
     var root = new Group();
     createRectangle(
-        text.length() * 5 + 18, 24, X-10, Y, fill, root);
+        text.length() * 5 + 18, X-10, Y, fill, root);
     createLabel(text, X, Y + 3, root);
     mainRoot.getChildren().add(root);
     return root;
   }
 
-  private Rectangle createRectangle(
-      double width, double height,
+  /**
+   * Create a color rectangle on a certain position.
+   */
+  private void createRectangle(
+      double width,
       double X, double Y, Paint fill, Group root) {
     var rectangle = new Rectangle();
-    rectangle.setHeight(height);
+    rectangle.setHeight(24);
     rectangle.setWidth(width);
     rectangle.setX(X);
     rectangle.setY(Y);
     rectangle.setFill(fill);
     root.getChildren().add(rectangle);
-    return rectangle;
   }
 
-  private ImageView readImage(
-      String fileName, double X,
-      double Y, Group root)
+  /**
+   * Show a image on the stage.
+   */
+  private void readImage(
+      String fileName,
+      Group root)
       throws FileNotFoundException {
     var img = new ImageView(
         new Image(
             new FileInputStream(
                 RESOURCE_PATH + fileName)));
-    img.setLayoutX(X);
-    img.setLayoutY(Y);
+    img.setLayoutX(0);
+    img.setLayoutY(0);
     root.getChildren().add(img);
-    return img;
   }
 
-  private Label createLabel (
+  /**
+   * Create a text an set it on a certain position on the stage.
+   */
+  private void createLabel (
       String text, double X, double Y, Group root) {
     var label = new Label(text);
     label.setLayoutX(X);
     label.setLayoutY(Y);
     root.getChildren().add(label);
-    return label;
   }
 
-  private Scene createScene (Stage stage, Group root) {
+  /**
+   * Create and set a scene.
+   */
+  private void createScene (Stage stage, Group root) {
     var scene = new Scene(root, 1280, 720);
     stage.setScene(scene);
-    return scene;
   }
+
+  /**
+   * Create a button with text on a certain position on the stage.
+   */
 
   private @NotNull Button createButton(
       String text, double X, double Y, Group root) {

@@ -49,7 +49,7 @@ class BlackMageTest extends AbstractPlayerCharacterTest {
   /**
    * Checks that the class' constructor and equals method works properly.
    */
-  @RepeatedTest(1000)
+  @RepeatedTest(500)
   void constructorTest(){
     checkBlackMageConstruction(new BlackMage(BLACK_MAGE_NAME, turns, maxHealth, defense, maxMana),
         testBlackCharacter,
@@ -64,7 +64,7 @@ class BlackMageTest extends AbstractPlayerCharacterTest {
   /**
    * Checks that the class' equip method works properly.
    */
-  @RepeatedTest(1000)
+  @RepeatedTest(500)
   void equipTest(){
     assertFalse(testBlackCharacter.isEquipped());
     testBlackCharacter.equip(testWeapons.get(0));
@@ -82,7 +82,7 @@ class BlackMageTest extends AbstractPlayerCharacterTest {
   /**
    * Checks that the class' attack method works properly.
    */
-  @RepeatedTest(1000)
+  @RepeatedTest(500)
   void attackByBlackMageTest(){
     var playerCharacterTest = new Thief("Thief", turns, r.nextInt(60), r.nextInt(30));
     testBlackCharacter.attack(playerCharacterTest);
